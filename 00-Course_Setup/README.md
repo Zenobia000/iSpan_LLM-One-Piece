@@ -80,22 +80,37 @@ This command will:
 
 To use the installed packages and run your scripts, you need to activate the virtual environment.
 
-#### **a) Using `poetry shell` (Recommended for all platforms)**
-This spawns a new shell with the virtual environment activated.
+#### **a) Using `poetry env activate` (Recommended for Poetry >= 2.0)**
+Poetry 2.0+ provides a replacement for the `shell` command. This method shows you the command to activate the virtual environment:
 
 ```bash
-poetry shell
+poetry env activate
 ```
 
-> **Note on Poetry >= 2.0:** The `shell` command is no longer installed by default. If the command is not found, you can restore it by installing the official plugin:
-> ```bash
-> poetry self add poetry-plugin-shell
-> ```
+This will output something like:
+```bash
+source /path/to/your/virtualenv/bin/activate
+```
+
+Copy and run the displayed command to activate the virtual environment.
+
+#### **b) Alternative: Manual virtual environment activation**
+If you prefer to activate directly, you can use the path shown by `poetry env info`:
+
+```bash
+# First, get the virtual environment path
+poetry env info --path
+
+# Then activate using the path (example for Linux/macOS/WSL)
+source $(poetry env info --path)/bin/activate
+```
+
+> **Note on poetry-plugin-shell:** While the `poetry shell` command can be restored with `poetry self add poetry-plugin-shell`, this may cause dependency conflicts on some systems. The `poetry env activate` method is more reliable.
 
 You can now run Python scripts (e.g., `python your_script.py`) or start Jupyter Lab (`jupyter lab`).
 
-#### **b) Using the `activate` script directly**
-If you prefer to activate it in your current shell, use the command for your specific OS and shell.
+#### **c) Using the `activate` script directly (Alternative method)**
+If you prefer to activate it in your current shell without using Poetry commands, use the command for your specific OS and shell.
 
 <details>
 <summary><strong>macOS / Linux / WSL (bash/zsh)</strong></summary>

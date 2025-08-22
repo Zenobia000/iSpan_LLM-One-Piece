@@ -8,9 +8,12 @@ Each lab focuses on a specific PEFT method, guiding you from environment setup t
 
 - **Lab-01-LoRA**: Covers the most popular PEFT method, Low-Rank Adaptation (LoRA), and its quantized variant, QLoRA.
 - **Lab-02-AdapterLayers**: Explores the classic "Adapter" method, which involves inserting small, trainable modules into the model architecture.
-- **Lab-03-Prompt_Tuning**: Focuses on Prompt Tuning (P-Tuning), a method that learns "soft prompts" to guide the model's behavior without altering its weights.
+- **Lab-03-Prompt_Tuning**: Focuses on Prompt Tuning, a method that learns "soft prompts" to guide the model's behavior without altering its weights.
 - **Lab-04-Prefix_Tuning**: Implements Prefix-Tuning, which is similar to Prompt Tuning but adds trainable prefixes to the model's internal states.
 - **Lab-05-IA3**: Demonstrates (IA)³, an extremely parameter-efficient method that learns to scale internal activations.
+- **Lab-06-BitFit**: Implements BitFit, an extremely parameter-efficient method that only fine-tunes bias parameters.
+- **Lab-07-P_Tuning**: Explores P-Tuning, which uses trainable virtual tokens with a prompt encoder for natural language understanding tasks.
+- **Lab-08-P_Tuning_v2**: Covers P-Tuning v2, an advanced version that applies deep prompts to every transformer layer for universal task effectiveness.
 
 ## Learning Approach
 

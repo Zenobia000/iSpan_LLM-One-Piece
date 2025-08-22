@@ -1,0 +1,166 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install different versions of packages depending
+#   on the platform. Pipfile.lock may expose sensitive information when shared among developers.
+#   Uncomment the following line if you want to ignore the Pipfile.lock file.
+#Pipfile.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   The same caveats apply as with Pipfile.lock.
+#   Uncomment the following line if you want to ignore the poetry.lock file.
+#poetry.lock
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#   The same caveats apply as with Pipfile.lock.
+#pdm.lock
+#   pdm stores project-wide configurations in .pdm.toml, but it is not recommended to commit it.
+.pdm.toml
+
+# PEP 582; used by pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# VSCode
+.vscode/
+
+# Models and datasets cache
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-01-LoRA/lora-llama2-7b-guanaco/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-02-AdapterLayers/bert-adapter-mrpc/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-03-Prompt_Tuning/t5-prompt-tuning-billsum/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-04-Prefix_Tuning/gpt2-prefix-tuning-imdb/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-05-IA3/gpt2-ia3-imdb/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-06-BitFit/bert-bitfit-mrpc/
+
+# Cache directories for datasets and models
+/mnt/d/Pretrained_models/
+.cache/

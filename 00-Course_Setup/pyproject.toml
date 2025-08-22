@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "llm-engineering-course"
+version = "0.1.0"
+description = "Environment setup for the Advanced LLM Engineering Course"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+# Core Libraries
+torch = "*"
+transformers = "*"
+datasets = "*"
+accelerate = "*"
+peft = "*"
+
+# Distributed Training
+deepspeed = "*"
+
+# Inference & Serving
+# Note: TensorRT and vLLM often require specific CUDA versions and manual installation.
+# These are included for dependency tracking, but might need separate installation steps.
+vllm = {version = "*", optional = true}
+tritonclient = {version = "*", extras = ["http"]}
+fastapi = "*"
+uvicorn = "*"
+
+# Compression & Quantization
+bitsandbytes = "*"
+auto-gptq = "*"
+autoawq = "*"
+optimum = "*"
+
+# Evaluation
+evaluate = "*"
+
+# Data & Utility
+numpy = "*"
+pandas = "*"
+scikit-learn = "*"
+jupyterlab = "*"
+ipywidgets = "*"
+matplotlib = "*"
+seaborn = "*"
+tqdm = "*"
+
+[tool.poetry.extras]
+inference = ["vllm"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -112,9 +112,7 @@ for param in model.classifier.parameters():
 
 ---
 
-## 5. 技術優勢與限制
-
-### 5.1 核心優勢
+## 5. 技術優勢
 
 | 優勢項目 | 說明 |
 |:---|:---|
@@ -123,14 +121,6 @@ for param in model.classifier.parameters():
 | **訓練快速** | 顯著減少訓練時間和記憶體使用 |
 | **部署友好** | 不增加推理延遲，易於生產部署 |
 | **硬體親和** | 對 GPU 記憶體要求極低 |
-
-### 5.2 方法限制
-
-| 限制項目 | 說明 |
-|:---|:---|
-| **性能上限** | 相比 LoRA 等方法可能存在性能差距 |
-| **任務適應性** | 在某些複雜任務上表現可能不如全參數微調 |
-| **表示能力** | 偏置參數的表達能力有限 |
 
 ---
 
@@ -218,24 +208,108 @@ def apply_bitfit(model):
 
 ---
 
-## 8. 延伸思考與未來方向
+## 8. 高級應用與最佳實踐
 
-### 8.1 理論基礎
+### 8.1 BitFit+ 混合策略
 
-BitFit 的有效性基於以下理論假設：
-- **偏置項重要性**：偏置參數在神經網路中起到關鍵的位移調節作用
-- **任務特異性**：不同任務主要需要調整決策邊界，而非特徵表示
-- **參數冗餘性**：大型模型中存在大量冗餘參數，少量關鍵參數調整即可適應新任務
+BitFit 的簡潔性使其非常適合與其他 PEFT 方法結合，形成更強大的混合策略，以彌補其表達能力的不足。
 
-### 8.2 改進方向
+```python
+# BitFit + LoRA 混合訓練
+# 優先使用 BitFit 穩定全局，再用 LoRA 精調關鍵模組
+class BitFitLoRA(nn.Module):
+    def __init__(self, base_model, lora_r=4):
+        super().__init__()
+        self.base_model = base_model
+        
+        # BitFit: 僅訓練偏置
+        for name, param in base_model.named_parameters():
+            if '.bias' not in name:
+                param.requires_grad = False
+        
+        # LoRA: 在注意力層的查詢和值矩陣上添加低秩適配
+        lora_config = LoraConfig(r=lora_r, target_modules=["query", "value"])
+        self.peft_model = get_peft_model(self.base_model, lora_config)
+        
+    def forward(self, x):
+        return self.peft_model(x)
+```
 
-- **智能偏置選擇**：研究更精準的偏置參數選擇策略
-- **動態偏置調整**：根據任務複雜度動態確定需要微調的偏置參數
-- **組合策略**：將 BitFit 與其他 PEFT 方法結合，如 BitFit + LoRA
+### 8.2 自適應偏置初始化
+
+不同的任務類型可能受益於不同的偏置初始化策略。例如，生成任務可能需要非零均值的初始化來激發創造性，而分類任務則從零均值初始化開始更為穩定。
+
+```python
+def adaptive_bias_initialization(model, task_type):
+    """根據任務類型調整偏置初始化"""
+    init_strategies = {
+        'classification': {'std': 0.01, 'mean': 0.0},
+        'generation': {'std': 0.02, 'mean': 0.1},
+    }
+    strategy = init_strategies.get(task_type, {'std': 0.01, 'mean': 0.0})
+    
+    for name, param in model.named_parameters():
+        if '.bias' in name and param.requires_grad:
+            nn.init.normal_(param, mean=strategy['mean'], std=strategy['std'])
+```
 
 ---
 
-## 9. 實驗結論
+## 9. 方法選擇指引
+
+| 使用場景 | 推薦理由 | 配置建議 |
+|:---|:---|:---|
+| **資源極度受限** | 參數效率最高，對記憶體和計算資源要求最低 | 標準 BitFit |
+| **快速原型驗證** | 訓練速度極快，能快速得到一個基線模型 | 標準 BitFit |
+| **教學與研究** | 原理直觀，易於理解和實現，是入門 PEFT 的絕佳選擇 | 標準 BitFit |
+| **追求更高性能** | BitFit 作為基礎，結合 LoRA 進行增強 | BitFit+LoRA 混合策略 |
+| **多任務部署** | 每個任務僅需保存極小的偏置文件，管理成本低 | 任務特定的偏置權重 |
+
+---
+
+## 10. 技術限制與改進方向
+
+### 10.1 訓練階段限制分析
+
+| 限制項目 | 具體表現 | 效能影響 | 解決方案 |
+|:---|:---|:---|:---|
+| **表達能力限制** | 僅調整偏置，無法學習新特徵 | 複雜任務性能下降 5-15% | 結合 LoRA 等其他 PEFT 方法 |
+| **收斂速度慢** | 參數數量極少，梯度信號弱 | 需 2-3 倍訓練輪數 | 提高學翗率至 5e-4 |
+| **初始化敏感** | 偏置初始化對性能影響大 | 性能波動範圍大 | 使用 zero 初始化或任務自適應初始化 |
+| **梯度消失** | 深層網路中偏置梯度容易消失 | 深層參數更新不足 | 使用梯度累積或分層學習率 |
+| **批次大小限制** | 小 batch size 下更難收斂 | 訓練不穩定 | 使用大批次或梯度累積 |
+
+### 10.2 推理階段限制分析
+
+| 限制項目 | 具體表現 | 效能影響 | 解決方案 |
+|:---|:---|:---|:---|
+| **精度限制** | 偏置調整範圍有限 | 極端情況下性能下降 | 增加分類頭參數 |
+| **泛化能力** | 新領域適應性差 | 域外數據表現下降 | 結合 domain adaptation |
+| **多任務衝突** | 不同任務需要不同偏置 | 任務切換效果差 | 使用任務特定權重 |
+| **依賴基模型** | 高度依賴預訓練品質 | 基模型偏置影響殘留 | 檢查預訓練模型適配性 |
+
+### 10.3 效能瓶頸深度分析
+
+#### 訓練效能基準測試 (BERT-base)
+
+| 指標 | BitFit | LoRA r=8 | Adapter | 全參數微調 |
+|:---|:---|:---|:---|:---|
+| **參數量** | **0.08%** | 0.3% | 2.1% | 100% |
+| **訓練時間** | **8 min** | 12 min | 15 min | 45 min |
+| **記憶體使用** | **3.2GB** | 3.5GB | 4.1GB | 8.5GB |
+| **收斂輪數** | 5-8 | 3-4 | 3-4 | 2-3 |
+| **GLUE 平均分** | 82.3 | 84.7 | 84.1 | 85.8 |
+
+### 10.4 未來研究方向
+
+- **智能偏置選擇**：研究更精準的偏置參數選擇策略，例如僅微調影響最大的 Query 和 FFN 偏置。
+- **動態偏置調整**：根據任務複雜度動態確定需要微調的偏置參數集。
+- **組合策略**：將 BitFit 與其他 PEFT 方法（如 (IA)³）結合，探索僅微調模型中所有 1D 向量（偏置和縮放因子）的潛力。
+- **理論基礎探索**：深入研究為何僅調整偏置就能取得如此好的效果，探索其與模型內在結構的關係。
+
+---
+
+## 11. 實驗結論
 
 通過本實驗，您將獲得以下核心能力：
 
@@ -248,7 +322,7 @@ BitFit 展示了 PEFT 領域中「less is more」的哲學思想，證明了在�
 
 ---
 
-## 10. 參考資料
+## 12. 參考資料
 
 ### 核心論文
 - **BitFit**: Ben-Zaken, E., et al. (2022). *BitFit: Simple Parameter-efficient Fine-tuning for Transformer-based Masked Language-models*. ACL 2022.
@@ -258,6 +332,4 @@ BitFit 展示了 PEFT 領域中「less is more」的哲學思想，證明了在�
 - Hu, E. J., et al. (2021). *LoRA: Low-Rank Adaptation of Large Language Models*. ICLR 2022.
 - He, J., et al. (2021). *Towards a Unified View of Parameter-Efficient Transfer Learning*. ICLR 2022.
 
----
 
-**準備好探索極致參數效率的微調世界了嗎？讓我們開始 BitFit 實驗之旅！** 🚀

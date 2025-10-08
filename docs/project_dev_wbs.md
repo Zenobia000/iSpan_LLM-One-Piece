@@ -45,7 +45,9 @@
 ### 整體完成度概覽 ⚠️ 重大更新
 - **專案架構**: ✅ 100% 完成 (Poetry + 資料夾結構)
 - **環境設定**: ✅ 95% 完成 (00-Course_Setup/)
-- **第一章內容**: ✅ 85-90% 完成 (PEFT 全面完成) ⬆️ +20-25%
+- **第一章內容**: 🔄 70% 完成 → 目標 95% (PEFT 100% + 訓練優化 0%)
+  - PEFT 技術: ✅ 100% (8個實驗室完成)
+  - 訓練優化: 🔄 0% → 規劃5個新實驗室
 - **第二章內容**: ⏸️ 0% 完成 (僅空資料夾結構)
 - **第三章內容**: ⏸️ 0% 完成 (僅空資料夾結構)
 - **第四章內容**: ⏸️ 0% 完成 (僅空資料夾結構)
@@ -208,10 +210,64 @@ Level 4: 具體任務 (Specific Tasks)
 - [ ] 主流框架介紹 (PyTorch DDP, Megatron-LM, DeepSpeed) - 配置示例
 - **🚨 限制**: 無法提供多GPU實作實驗，僅能提供理論教學與模擬示例
 
-#### 2.3 訓練優化與對齊教學 (待開發)
+#### 2.3 訓練優化與對齊教學 ⭐ 新增規劃
 **WBS ID**: 2.3
-**狀態**: ⏸️ 規劃階段
-- [⏸️] 1.3-Optimization_and_Alignment.md (空檔案)
+**狀態**: 🔄 開發中 (理論完成, 實驗室開發中)
+**完成度**: 20% (理論 100%, 實驗室 0%)
+**教學價值**: 單GPU環境的高效訓練與模型對齊技術
+
+##### 2.3.1 訓練優化理論 ✅ 100% 完成
+- [✅] 1.3-Optimization_and_Alignment.md (518行, 16.4KB) ⭐ 已完成
+  - FlashAttention V1/V2 原理與實現
+  - 混合精度訓練、梯度累積、梯度檢查點
+  - MQA/GQA 注意力優化
+  - PPO, DPO, ORPO 對齊技術
+
+##### 2.3.2 訓練優化實驗室 (5個新實驗室) 🔄 規劃中
+**WBS ID**: 2.3.2
+**狀態**: 🔄 開發中
+**預估完成時間**: 7-9週 (65-86工時)
+
+**Lab-1.4: Training Optimization Basics** 🔴 優先
+- [ ] 01-Mixed_Precision.ipynb - 混合精度訓練 (FP32/FP16/BF16)
+- [ ] 02-Gradient_Accumulation.ipynb - 梯度累積技術
+- [ ] 03-Gradient_Checkpointing.ipynb - 梯度檢查點
+- [ ] 04-Memory_Profiling.ipynb - 記憶體分析工具
+**預估工時**: 15-20小時 | **期限**: Week 1-2
+
+**Lab-1.5: FlashAttention Deep Dive** 🔴 優先
+- [ ] 01-Setup_and_Comparison.ipynb - 環境與標準注意力對比
+- [ ] 02-FlashAttention_Demo.ipynb - FlashAttention 實作
+- [ ] 03-Long_Sequence_Training.ipynb - 長序列訓練應用
+- [ ] 04-Performance_Analysis.ipynb - 性能深度分析
+**預估工時**: 12-16小時 | **期限**: Week 3-4
+
+**Lab-1.6: Efficient Attention (MQA/GQA)** 🟠 高優先
+- [ ] 01-Setup.ipynb - 標準MHA基準
+- [ ] 02-MQA_Implementation.ipynb - Multi-Query Attention
+- [ ] 03-GQA_Implementation.ipynb - Grouped-Query Attention
+- [ ] 04-Inference_Optimization.ipynb - 推理加速對比
+**預估工時**: 10-14小時 | **期限**: Week 3-4
+
+**Lab-1.7: DPO Alignment** 🔴 優先
+- [ ] 01-Setup_and_Data.ipynb - 環境與偏好數據準備
+- [ ] 02-SFT_Baseline.ipynb - 監督微調基準
+- [ ] 03-DPO_Training.ipynb - DPO 直接偏好優化
+- [ ] 04-Evaluation_and_Compare.ipynb - 對齊效果評估
+**預估工時**: 16-20小時 | **期限**: Week 5-6
+
+**Lab-1.8: ORPO Alignment** 🟡 中優先
+- [ ] 01-Setup.ipynb - 環境準備
+- [ ] 02-ORPO_Training.ipynb - ORPO 單階段訓練
+- [ ] 03-Compare_with_DPO.ipynb - vs DPO 對比
+- [ ] 04-Production_Deploy.ipynb - 生產部署指南
+**預估工時**: 12-16小時 | **期限**: Week 7
+
+**技術特色**:
+- ✅ **單GPU友好**: 所有實驗可在16GB VRAM環境執行
+- ✅ **理論實踐結合**: 對應1.3理論文件的完整實作
+- ✅ **工業界標準**: FlashAttention, DPO 等主流技術
+- ✅ **漸進式學習**: 從基礎優化到對齊技術
 - [ ] 優化技術教學 (FlashAttention, 混合精度, MQA/GQA)
 - [ ] 對齊技術教學 (PPO, DPO, ORPO)
 

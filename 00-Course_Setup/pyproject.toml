@@ -8,45 +8,60 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 
-# Core Libraries
-torch = "*"
-transformers = "*"
-datasets = "*"
-accelerate = "*"
-peft = "*"
+# Core Libraries - CUDA 12.1 optimized
+torch = ">=2.0.0"
+torchaudio = ">=2.0.0"
+torchvision = ">=0.15.0"
+transformers = ">=4.35.0"
+datasets = ">=2.14.0"
+accelerate = ">=0.24.0"
+peft = ">=0.7.0"
 
 # Distributed Training
-deepspeed = "*"
+deepspeed = ">=0.12.0"
 
 # Inference & Serving
-# Note: TensorRT and vLLM often require specific CUDA versions and manual installation.
-# These are included for dependency tracking, but might need separate installation steps.
-vllm = {version = "*", optional = true}
-tritonclient = {version = "*", extras = ["http"]}
-fastapi = "*"
-uvicorn = "*"
+# CUDA 11.5 compatible versions
+vllm = {version = ">=0.2.0", optional = true}
+tritonclient = {version = ">=2.38.0", extras = ["http"]}
+fastapi = ">=0.104.0"
+uvicorn = ">=0.24.0"
 
-# Compression & Quantization
-bitsandbytes = "*"
-auto-gptq = "*"
-autoawq = "*"
-optimum = "*"
+# Compression & Quantization - CUDA 12.1 compatible
+bitsandbytes = ">=0.41.0"
+auto-gptq = ">=0.5.0"
+autoawq = ">=0.1.6"
+optimum = ">=1.14.0"
 
 # Evaluation
 evaluate = "*"
 
 # Data & Utility
-numpy = "*"
-pandas = "*"
-scikit-learn = "*"
-jupyterlab = "*"
-ipywidgets = "*"
-matplotlib = "*"
-seaborn = "*"
-tqdm = "*"
+numpy = ">=1.24.0"
+pandas = ">=2.0.0"
+scikit-learn = ">=1.3.0"
+jupyterlab = ">=4.0.0"
+ipywidgets = ">=8.0.0"
+matplotlib = ">=3.7.0"
+seaborn = ">=0.12.0"
+tqdm = ">=4.65.0"
+
+# CUDA utilities
+gputil = ">=1.4.0"
+psutil = ">=5.9.0"
+
+# Flash Attention (CUDA 12.1 compatible)
+flash-attn = {version = ">=2.3.0", optional = true}
 
 [tool.poetry.extras]
 inference = ["vllm"]
+flash-attention = ["flash-attn"]
+all = ["vllm", "flash-attn"]
+
+[[tool.poetry.source]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]

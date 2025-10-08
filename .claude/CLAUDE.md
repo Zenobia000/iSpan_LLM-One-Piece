@@ -1,0 +1,1 @@
+- env is wsl about linux

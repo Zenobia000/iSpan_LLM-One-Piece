@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "llm-engineering-course"
-version = "0.2.0"
-description = "Environment setup for the Advanced LLM Engineering Course - with Training Optimization & Inference"
+version = "0.3.0"
+description = "Advanced LLM Engineering Course - Training, Optimization, Inference & Serving"
 authors = ["LLM Teaching Project Team <noreply@example.com>"]
 readme = "README.md"
 package-mode = false
@@ -18,9 +18,12 @@ torchaudio = {version = "^2.5.1", source = "pytorch-cu121"}
 datasets = ">=2.14.0"
 accelerate = ">=0.24.0"
 
-# Inference & Serving
+# Inference & Serving (Chapter 2)
 fastapi = ">=0.104.0"
-uvicorn = ">=0.24.0"
+uvicorn = {version = ">=0.24.0", extras = ["standard"]}
+prometheus-client = ">=0.19.0"
+aiohttp = ">=3.9.0"
+websockets = ">=12.0"
 
 # Data & Utility
 numpy = ">=1.24.0"

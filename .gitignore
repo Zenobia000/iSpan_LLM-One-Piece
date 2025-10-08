@@ -156,10 +156,17 @@ cython_debug/
 # Models and datasets cache
 /01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-01-LoRA/lora-llama2-7b-guanaco/
 /01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-02-AdapterLayers/bert-adapter-mrpc/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-02-AdapterLayers/bert-adapters-mrpc/
 /01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-03-Prompt_Tuning/t5-prompt-tuning-billsum/
 /01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-04-Prefix_Tuning/gpt2-prefix-tuning-imdb/
 /01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-05-IA3/gpt2-ia3-imdb/
 /01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-06-BitFit/bert-bitfit-mrpc/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-07-P_Tuning/bert-ptuning-sst2/
+/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-08-P_Tuning_v2/bert-ptuning-v2-cola/
+
+# System dependency packages
+*.deb
+*.rpm
 
 # Cache directories for datasets and models
 /mnt/d/Pretrained_models/

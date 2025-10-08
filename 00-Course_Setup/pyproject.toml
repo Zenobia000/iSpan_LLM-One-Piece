@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "llm-engineering-course"
-version = "0.1.0"
-description = "Environment setup for the Advanced LLM Engineering Course"
-authors = ["Your Name <you@example.com>"]
+version = "0.2.0"
+description = "Environment setup for the Advanced LLM Engineering Course - with Training Optimization & Inference"
+authors = ["LLM Teaching Project Team <noreply@example.com>"]
 readme = "README.md"
 package-mode = false
 

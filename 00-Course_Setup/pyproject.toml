@@ -39,7 +39,7 @@ transformers = "^4.57.0"
 peft = ">=0.7.0"
 bitsandbytes = ">=0.48.1"
 sentencepiece = ">=0.2.1"
-protobuf = ">=6.32.1"
+protobuf = ">=3.20.0"
 
 # Jupyter kernel
 ipykernel = "^6.29.0"

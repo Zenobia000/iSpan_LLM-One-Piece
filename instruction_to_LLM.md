@@ -1,14 +1,16 @@
-https://zhuanlan.zhihu.com/p/635152813
-https://zhuanlan.zhihu.com/p/635686756
-https://zhuanlan.zhihu.com/p/635848732
-https://zhuanlan.zhihu.com/p/636038478
-https://zhuanlan.zhihu.com/p/636215898
-https://zhuanlan.zhihu.com/p/636362246
-https://zhuanlan.zhihu.com/p/649755252
+https://zhuanlan.zhihu.com/p/598714869
+https://zhuanlan.zhihu.com/p/650002268
+https://zhuanlan.zhihu.com/p/653860567
+https://zhuanlan.zhihu.com/p/657921100
+https://zhuanlan.zhihu.com/p/659792351
+https://zhuanlan.zhihu.com/p/661279318
+https://zhuanlan.zhihu.com/p/662517647
+https://zhuanlan.zhihu.com/p/662518387
+https://zhuanlan.zhihu.com/p/667051845
 
 
 結合你的博士級學術理解
-針對 /home/wwy2204/python_station/iSpan_LLM-One-Piece/01-Core_Training_Techniques/01-Theory/1.1-PEFT.md
+針對 /home/os-sunnie.gd.weng/python_workstation/side-project/iSpan_LLM-One-Piece/01-Core_Training_Techniques/01-Theory/1.2-Distributed_Training.md
 基於以下框架撰以教科書級別撰寫教學講義
 
 

@@ -18,17 +18,21 @@
 │   │   └── README.md                   # 量化技術深度解析
 │   └── Parameter_Estimation/           # 0.5 參數量與計算複雜度
 │       └── README.md                   # 資源估算理論與實踐
-└── 02-Labs/                            # 實踐演習（5個Lab）
-    ├── Lab-0.1-Model_Lifecycle_Demo/   # 生命週期體驗實驗
-    │   └── README.md                   # 完整演示指導
-    ├── Lab-0.2-Evaluation_Benchmark/   # 評估基準實踐
-    │   └── README.md                   # 評估工具實戰
-    ├── Lab-0.3-Dataset_Analysis/       # 數據集分析實踐
-    │   └── README.md                   # 數據分析實戰
-    ├── Lab-0.4-Quantization_Comparison/ # 量化技術對比
-    │   └── README.md                   # 量化實驗指導
-    └── Lab-0.5-Parameter_Calculator/   # 資源計算器開發
-        └── README.md                   # 計算器開發指導
+├── 02-Labs/                            # 實踐演習（6個Lab）
+│   ├── Lab-0.1-Model_Lifecycle_Demo/   # 生命週期體驗實驗
+│   │   └── README.md                   # 完整演示指導
+│   ├── Lab-0.2-Evaluation_Benchmark/   # 評估基準實踐
+│   │   └── README.md                   # 評估工具實戰
+│   ├── Lab-0.3-Dataset_Analysis/       # 數據集分析實踐
+│   │   └── README.md                   # 數據分析實戰
+│   ├── Lab-0.4-Quantization_Comparison/ # 量化技術對比
+│   │   └── README.md                   # 量化實驗指導
+│   ├── Lab-0.5-Parameter_Calculator/   # 資源計算器開發
+│   │   └── README.md                   # 計算器開發指導
+│   └── Lab-0.6-Model_Compression_Engineering/  # **[新增]** 工程化壓縮實踐
+│       └── README.md                   # 端到端壓縮流程實踐
+├── MODEL_COMPRESSION_ENGINEERING.md   # **[新增]** 工程化壓縮指南
+└── LEARNING_PATH.md                    # 學習路徑指導
 ```
 
 ## 📋 各文件內容總結

@@ -1,0 +1,441 @@
+# 0.2 LLM 核心評估指標體系
+
+## 專論概述
+
+本專論建立科學、全面的LLM評估框架，涵蓋從訓練過程監控到最終部署效果的完整評估體系。掌握正確的評估方法是LLM工程化成功的關鍵。
+
+## 學習目標
+
+- 建立多維度的LLM評估思維框架
+- 掌握不同評估指標的適用場景和計算方法
+- 能夠設計針對特定應用的評估方案
+- 理解評估指標的局限性和潛在偏差
+
+## 核心內容架構
+
+### 0.2.1 訓練過程評估指標
+
+#### Loss函數體系
+```
+LLM損失函數分類
+├── 語言建模損失
+│   ├── Cross-entropy Loss
+│   │   ├── 標準交叉熵損失
+│   │   ├── 標籤平滑交叉熵
+│   │   └── Focal Loss變體
+│   ├── Perplexity（困惑度）
+│   │   ├── 定義：exp(cross_entropy_loss)
+│   │   ├── 計算：PPL = exp(-1/N * Σlog P(w_i|context))
+│   │   └── 解釋：模型對下一個詞的"困惑程度"
+│   └── Bits Per Character (BPC)
+├── 對比學習損失
+│   ├── InfoNCE Loss
+│   ├── Contrastive Loss
+│   └── Triplet Loss
+└── 正則化項
+    ├── L1/L2權重正則化
+    ├── Dropout正則化
+    └── 梯度裁剪
+```
+
+#### 訓練動態指標
+- **學習曲線分析**
+  - Loss收斂模式識別
+  - 過擬合/欠擬合診斷
+  - 訓練穩定性評估
+
+- **梯度統計**
+  - 梯度範數分布
+  - 梯度爆炸/消失檢測
+  - 參數更新幅度監控
+
+- **優化效率指標**
+  - 有效批次大小
+  - 學習率敏感性
+  - 收斂速度估算
+
+#### 實用監控工具
+```python
+# 訓練監控指標計算範例
+class TrainingMonitor:
+    def compute_perplexity(self, loss):
+        return torch.exp(loss)
+
+    def gradient_norm(self, model):
+        total_norm = 0
+        for p in model.parameters():
+            if p.grad is not None:
+                param_norm = p.grad.data.norm(2)
+                total_norm += param_norm.item() ** 2
+        return total_norm ** (1. / 2)
+
+    def parameter_update_ratio(self, model, lr):
+        ratios = []
+        for p in model.parameters():
+            if p.grad is not None:
+                update = lr * p.grad.data
+                ratio = (update.norm() / p.data.norm()).item()
+                ratios.append(ratio)
+        return np.mean(ratios)
+```
+
+### 0.2.2 能力評估指標體系
+
+#### 語言理解能力
+```
+語言理解評估基準
+├── 英文基準測試集
+│   ├── GLUE（General Language Understanding）
+│   │   ├── CoLA：文法可接受性
+│   │   ├── SST-2：情感分析
+│   │   ├── MRPC：語義相似度
+│   │   ├── STS-B：語義文本相似度
+│   │   ├── QQP：問題對重複檢測
+│   │   ├── MNLI：自然語言推理
+│   │   ├── QNLI：問答自然語言推理
+│   │   └── RTE：Recognizing Textual Entailment
+│   ├── SuperGLUE（更具挑戰性）
+│   │   ├── BoolQ：是非問答
+│   │   ├── CB：CommitmentBank
+│   │   ├── COPA：Choice of Plausible Alternatives
+│   │   ├── MultiRC：多句閱讀理解
+│   │   ├── ReCoRD：Reading Comprehension with Commonsense
+│   │   ├── RTE：Recognizing Textual Entailment
+│   │   ├── WiC：Words in Context
+│   │   └── WSC：Winograd Schema Challenge
+│   └── 特定能力測試
+│       ├── SQuAD：閱讀理解
+│       ├── RACE：多選閱讀理解
+│       └── HellaSwag：常識推理
+├── 中文基準測試集
+│   ├── CLUE（Chinese Language Understanding）
+│   │   ├── AFQMC：螞蟻金融語義相似度
+│   │   ├── TNEWS：新聞分類
+│   │   ├── IFLYTEK：應用描述分類
+│   │   ├── CMNLI：中文自然語言推理
+│   │   ├── OCNLI：原創中文自然語言推理
+│   │   ├── WSC：中文Winograd
+│   │   └── CSL：中文科學文獻
+│   └── C-Eval：中文綜合評估
+│       ├── 人文社科類
+│       ├── 理工科類
+│       ├── 其他類別
+│       └── Hard級別測試
+└── 多語言基準
+    ├── XTREME：跨語言理解
+    ├── XNLI：跨語言自然語言推理
+    └── XQuAD：跨語言問答
+```
+
+#### 推理能力評估
+```
+推理能力評估分類
+├── 邏輯推理
+│   ├── 演繹推理（Deductive）
+│   │   ├── 三段論推理
+│   │   ├── 命題邏輯
+│   │   └── 謂詞邏輯
+│   ├── 歸納推理（Inductive）
+│   │   ├── 模式識別
+│   │   ├── 類比推理
+│   │   └── 統計推理
+│   └── 常識推理（Commonsense）
+│       ├── 物理常識
+│       ├── 社會常識
+│       └── 心理推理
+├── 數學推理
+│   ├── 算術運算
+│   │   ├── 基礎四則運算
+│   │   ├── 分數和小數
+│   │   └── 百分比計算
+│   ├── 代數問題
+│   │   ├── 方程求解
+│   │   ├── 函數分析
+│   │   └── 不等式處理
+│   ├── 幾何問題
+│   │   ├── 平面幾何
+│   │   ├── 立體幾何
+│   │   └── 解析幾何
+│   └── 應用數學
+│       ├── 概率統計
+│       ├── 組合數學
+│       └── 數學建模
+└── 鏈式思維評估
+    ├── Chain-of-Thought推理
+    ├── 步驟分解能力
+    └── 錯誤自我糾正
+```
+
+#### 專業領域評估
+
+**代碼生成能力**
+```
+程式設計評估基準
+├── 代碼生成
+│   ├── HumanEval
+│   │   ├── 164個Python函數生成任務
+│   │   ├── 通過率（Pass@k）指標
+│   │   └── 功能正確性測試
+│   ├── MBPP（Mostly Basic Python Problems）
+│   │   ├── 974個程式設計問題
+│   │   ├── 基礎程式設計概念
+│   │   └── 多樣化測試案例
+│   └── CodeXGLUE
+│       ├── 代碼摘要
+│       ├── 代碼檢索
+│       ├── 代碼翻譯
+│       └── 缺陷檢測
+├── 程式設計競賽
+│   ├── APPS（Programming Problems）
+│   ├── CodeContests
+│   └── LeetCode風格問題
+└── 實用性評估
+    ├── 代碼可讀性
+    ├── 執行效率
+    └── 安全性檢查
+```
+
+**知識密集型任務**
+```
+知識評估領域
+├── 百科知識
+│   ├── MMLU（Massive Multitask Language Understanding）
+│   │   ├── 57個學科領域
+│   │   ├── 高中到大學難度
+│   │   └── 15,908道選擇題
+│   ├── TruthfulQA
+│   │   ├── 事實準確性評估
+│   │   ├── 常見誤解識別
+│   │   └── 知識誠實度測試
+│   └── Natural Questions
+│       ├── 真實搜索查詢
+│       ├── Wikipedia段落答案
+│       └── 開放域問答
+├── 專業領域知識
+│   ├── 醫學：MedQA, PubMedQA
+│   ├── 法律：LawBench, LegalBench
+│   ├── 科學：ScienceQA, AI2 Science
+│   └── 歷史：HistoryQA
+└── 多模態知識
+    ├── VQA（Visual Question Answering）
+    ├── TextVQA
+    └── 科學圖表理解
+```
+
+### 0.2.3 性能評估指標
+
+#### 推理效率指標
+```
+推理性能指標體系
+├── 吞吐量指標
+│   ├── Tokens per Second（TPS）
+│   │   ├── 定義：每秒處理的token數量
+│   │   ├── 計算：TPS = total_tokens / total_time
+│   │   └── 影響因素：硬體、模型大小、優化技術
+│   ├── Queries per Second（QPS）
+│   │   ├── 定義：每秒處理的查詢數量
+│   │   ├── 適用場景：批量推理評估
+│   │   └── 業務意義：用戶併發能力
+│   └── Effective Throughput
+│       ├── 考慮實際業務需求的有效吞吐量
+│       ├── 包含前後處理時間
+│       └── 真實部署環境測試結果
+├── 延遲指標
+│   ├── Time to First Token（TTFT）
+│   │   ├── 定義：從請求到第一個token生成的時間
+│   │   ├── 用戶體驗關鍵指標
+│   │   └── 優化重點：模型載入、推理啟動
+│   ├── Inter-Token Latency（ITL）
+│   │   ├── 定義：生成相鄰token間的平均時間
+│   │   ├── 影響流暢度感知
+│   │   └── 與模型複雜度直接相關
+│   ├── End-to-End Latency
+│   │   ├── 完整請求響應時間
+│   │   ├── 包含網路傳輸時間
+│   │   └── 真實用戶體驗指標
+│   └── P95/P99 Latency
+│       ├── 95%/99%請求的延遲上限
+│       ├── 服務穩定性評估
+│       └── SLA制定依據
+└── 資源效率
+    ├── 記憶體使用率
+    ├── GPU利用率
+    ├── 能耗效率
+    └── 成本效益比
+```
+
+#### 可擴展性指標
+- **併發處理能力**
+  - 最大併發用戶數
+  - 負載均衡效果
+  - 資源瓶頸識別
+
+- **水平擴展效率**
+  - 節點增加的性能提升比
+  - 通訊開銷分析
+  - 負載分布均勻度
+
+#### 性能測試工具
+```bash
+# 性能測試工具範例
+# 使用GenAI-Perf進行基準測試
+genai-perf \
+    --model model_name \
+    --concurrency 32 \
+    --measurement-interval 10000 \
+    --profile-export-file profile_results.json \
+    --input-file input_data.jsonl
+```
+
+### 0.2.4 安全性與倫理評估
+
+#### 安全性指標
+```
+AI安全評估框架
+├── 內容安全
+│   ├── 有害內容生成
+│   │   ├── 暴力和仇恨言論
+│   │   ├── 不當性內容
+│   │   └── 自我傷害誘導
+│   ├── 偏見與歧視
+│   │   ├── 性別偏見測試
+│   │   ├── 種族偏見評估
+│   │   └── 年齡和宗教偏見
+│   └── 隱私保護
+│       ├── 個人信息洩露風險
+│       ├── 記憶攻擊抵抗力
+│       └── 數據重建能力測試
+├── 對抗攻擊抵抗力
+│   ├── 提示注入攻擊
+│   ├── 越獄攻擊（Jailbreaking）
+│   └── 後門攻擊檢測
+└── 事實準確性
+    ├── 幻覺檢測
+    ├── 知識一致性
+    └── 不確定性表達
+```
+
+#### 評估方法與工具
+- **自動化安全評估**
+  - RealToxicityPrompts
+  - BOLD（Bias in Open-ended Language Generation Dataset）
+  - WinoBias
+
+- **人工評估標準**
+  - 內容審查標準
+  - 多輪對話安全性
+  - 邊界情況處理
+
+### 0.2.5 評估指標的選擇與應用
+
+#### 應用場景對應的評估策略
+```
+評估策略選擇指南
+├── 預訓練階段
+│   ├── 主要指標：Perplexity, Loss曲線
+│   ├── 輔助指標：梯度統計, 學習率敏感性
+│   └── 評估頻率：每個epoch或固定步數
+├── 微調階段
+│   ├── 主要指標：任務特定F1, BLEU, ROUGE
+│   ├── 輔助指標：困惑度變化, 參數更新比例
+│   └── 評估頻率：驗證集定期評估
+├── 部署前評估
+│   ├── 綜合能力：MMLU, C-Eval等基準
+│   ├── 安全性評估：偏見、有害內容檢測
+│   └── 性能評估：延遲、吞吐量測試
+└── 線上監控
+    ├── 用戶滿意度指標
+    ├── 系統性能監控
+    └── 內容質量抽樣檢查
+```
+
+#### 評估結果解讀原則
+- **統計顯著性**：多次實驗結果的一致性
+- **實用性評估**：指標改進對實際應用的影響
+- **成本效益分析**：性能提升與資源投入的平衡
+- **長期穩定性**：時間維度上的性能變化
+
+#### 常見評估陷阱與避免策略
+```
+評估陷阱識別
+├── 數據洩漏問題
+│   ├── 訓練集與測試集重疊
+│   ├── 預訓練數據包含測試樣本
+│   └── 解決方案：嚴格數據分離、時間劃分
+├── 評估基準的局限性
+│   ├── 基準過時或過於簡單
+│   ├── 不能反映實際應用需求
+│   └── 解決方案：多維度評估、定制化測試
+├── 優化指標與目標不一致
+│   ├── 過度優化單一指標
+│   ├── 忽視用戶實際需求
+│   └── 解決方案：多目標優化、人工評估結合
+└── 評估環境與部署環境差異
+    ├── 硬體環境不一致
+    ├── 數據分布變化
+    └── 解決方案：線上A/B測試、灰度發布
+```
+
+## 評估工具與框架推薦
+
+### 開源評估框架
+```python
+# 主流評估工具
+evaluation_tools = {
+    "OpenCompass": {
+        "描述": "上海AI Lab開源的LLM評估平台",
+        "特點": "支持多種基準、中文友好、可擴展",
+        "使用場景": "綜合評估、基準測試"
+    },
+    "lm-evaluation-harness": {
+        "描述": "EleutherAI的評估框架",
+        "特點": "標準化評估、多任務支持",
+        "使用場景": "英文基準測試"
+    },
+    "HELM": {
+        "描述": "斯坦福的全息評估框架",
+        "特點": "多維度評估、偏見檢測",
+        "使用場景": "安全性評估、偏見分析"
+    }
+}
+```
+
+### 性能測試工具
+- **GenAI-Perf**：NVIDIA的生成式AI性能評估工具
+- **MLPerf**：機器學習基準測試標準
+- **自定義壓測腳本**：針對特定場景的性能測試
+
+## 實踐建議與最佳實踐
+
+### 評估流程設計
+1. **明確評估目標**：針對具體應用場景選擇合適指標
+2. **建立基線**：使用已知模型建立性能基準
+3. **多維度評估**：結合自動化與人工評估
+4. **持續監控**：建立長期評估機制
+5. **結果解讀**：統計分析與業務價值評估
+
+### 成本優化策略
+- **分層評估**：快速篩選+詳細評估的組合策略
+- **採樣評估**：對大規模數據集進行科學採樣
+- **增量評估**：只對變更部分進行重新評估
+- **並行評估**：利用分散式計算提高效率
+
+## 延伸閱讀與資源
+
+### 重要論文
+1. **BLEU: a Method for Automatic Evaluation of Machine Translation**
+2. **ROUGE: A Package for Automatic Evaluation of Summaries**
+3. **BERTScore: Evaluating Text Generation with BERT**
+4. **HELM: Holistic Evaluation of Language Models**
+
+### 評估數據集資源
+- **Papers with Code Leaderboards**：各任務的最新性能排行
+- **HuggingFace Datasets**：標準評估數據集集合
+- **OpenAI Evals**：OpenAI的評估數據集和方法
+
+### 實用工具
+- **Weights & Biases**：實驗管理和指標追蹤
+- **TensorBoard**：訓練過程可視化
+- **MLflow**：模型生命週期管理
+
+這個專論為學員建立了完整的LLM評估思維框架，為後續的實踐應用奠定了堅實基礎。

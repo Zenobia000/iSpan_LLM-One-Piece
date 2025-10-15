@@ -18,21 +18,47 @@
 
 ```
 00-LLM_Fundamentals/
-├── 01-Theory/                    # 理論專論
+├── 01-Theory/                    # 📚 理論專論（僅文檔）
 │   ├── LLM_Lifecycle/           # 0.1 LLM生命週期全景
+│   │   └── README.md            # 四階段完整理論框架
 │   ├── Evaluation_Metrics/      # 0.2 核心評估指標體系
+│   │   └── README.md            # 多維度評估理論
 │   ├── Dataset_Types/           # 0.3 數據集類型與特性
+│   │   └── README.md            # 數據工程理論體系
 │   ├── Quantization_Landscape/  # 0.4 量化技術全景圖
+│   │   └── README.md            # 量化技術深度理論
 │   └── Parameter_Estimation/    # 0.5 參數量與計算複雜度
-├── 02-Labs/                     # 實踐演習
-│   ├── Lab-0.1-Model_Lifecycle_Demo/
-│   ├── Lab-0.2-Evaluation_Benchmark/
-│   ├── Lab-0.3-Dataset_Analysis/
-│   ├── Lab-0.4-Quantization_Comparison/
-│   ├── Lab-0.5-Parameter_Calculator/
-│   └── Lab-0.6-Model_Compression_Engineering/  # **[新增]** 工程化壓縮實踐
-├── MODEL_COMPRESSION_ENGINEERING.md   # **[新增]** 工程化壓縮指南
-└── README.md                          # 本文件
+│       └── README.md            # 資源估算+硬體匹配理論
+├── 02-Labs/                     # 🔬 實踐演習（含程式碼）
+│   ├── Lab-0.1-Model_Lifecycle_Demo/      # 生命週期體驗
+│   │   ├── README.md            # 實驗指導
+│   │   ├── lifecycle_demo.py    # 概念演示程式碼
+│   │   └── lifecycle_lab.py     # 完整實驗程式碼
+│   ├── Lab-0.2-Evaluation_Benchmark/      # 評估基準實踐
+│   │   ├── README.md            # 實驗指導
+│   │   ├── evaluation_toolkit.py # 評估工具包
+│   │   └── benchmark_lab.py     # 實驗主腳本
+│   ├── Lab-0.3-Dataset_Analysis/          # 數據集分析
+│   │   ├── README.md            # 實驗指導
+│   │   ├── dataset_analyzer.py  # 數據分析工具
+│   │   └── analysis_lab.py      # 實驗主腳本
+│   ├── Lab-0.4-Quantization_Comparison/   # 量化技術對比
+│   │   ├── README.md            # 實驗指導
+│   │   ├── quantization_demo.py # 量化演示工具
+│   │   └── comparison_lab.py    # 實驗主腳本
+│   ├── Lab-0.5-Parameter_Calculator/      # 資源計算器
+│   │   ├── README.md            # 實驗指導
+│   │   ├── parameter_calculator.py # 參數計算工具
+│   │   └── calculator_lab.py    # 實驗主腳本
+│   └── Lab-0.6-Model_Compression_Engineering/ # 工程化壓縮
+│       ├── README.md            # 實驗指導
+│       └── compression_lab.py   # 工程化實驗腳本
+├── utils/                       # 🛠️ 共享工具模組
+│   ├── __init__.py             # 模組初始化
+│   └── model_utils.py          # 模型操作工具
+├── LEARNING_PATH.md             # 📖 學習路徑指導
+├── MODEL_COMPRESSION_ENGINEERING.md # ⚡ 快速工程化指南
+└── README.md                    # 📋 本文件
 ```
 
 ## 先備知識

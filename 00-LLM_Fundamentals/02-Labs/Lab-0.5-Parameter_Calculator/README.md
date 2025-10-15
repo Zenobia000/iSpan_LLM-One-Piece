@@ -24,6 +24,21 @@
 
 ## 主要實驗內容
 
+## 實驗程式碼說明
+
+本Lab包含參數計算工具：
+- **`parameter_calculator.py`**: 完整的LLM資源計算器，包含參數量計算、FLOPs估算、硬體匹配等
+
+## 執行方式
+
+```bash
+# 運行完整參數計算演示
+python parameter_calculator.py
+
+# 或在代碼中使用
+from parameter_calculator import ParameterCalculator
+```
+
 ### LLM資源計算器實現
 
 ```python

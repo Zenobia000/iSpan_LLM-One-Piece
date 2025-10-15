@@ -23,6 +23,21 @@
 - Python 3.8+
 - 已激活的poetry虛擬環境
 
+## 實驗程式碼說明
+
+本Lab包含數據分析工具：
+- **`dataset_analyzer.py`**: 數據集分析器，支援預訓練、指令、偏好等多種數據集類型分析
+
+## 執行方式
+
+```bash
+# 運行完整數據集分析演示
+python dataset_analyzer.py
+
+# 或在代碼中使用
+from dataset_analyzer import DatasetAnalyzer
+```
+
 ## 實驗內容
 
 ### 任務一：預訓練數據集分析

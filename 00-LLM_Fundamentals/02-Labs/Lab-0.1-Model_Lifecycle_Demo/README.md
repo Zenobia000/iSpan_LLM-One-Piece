@@ -25,6 +25,24 @@
 - Transformers 4.30+
 - 已激活的poetry虛擬環境
 
+## 實驗程式碼說明
+
+本Lab包含兩個主要程式碼文件：
+- **`lifecycle_demo.py`**: 理論概念演示，展示各階段的技術特點
+- **`lifecycle_lab.py`**: 完整實驗流程，包含實際的模型訓練和測試
+
+## 執行方式
+
+### 快速概念演示
+```bash
+python lifecycle_demo.py
+```
+
+### 完整實驗流程
+```bash
+python lifecycle_lab.py
+```
+
 ## 實驗內容
 
 ### 階段一：預訓練演示（模擬）

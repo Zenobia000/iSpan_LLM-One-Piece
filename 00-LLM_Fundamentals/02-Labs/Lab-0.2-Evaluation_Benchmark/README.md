@@ -24,6 +24,21 @@
 - 已激活的poetry虛擬環境
 - 網路連接（用於下載模型和數據集）
 
+## 實驗程式碼說明
+
+本Lab包含核心評估工具：
+- **`evaluation_toolkit.py`**: 完整的LLM評估工具包，包含困惑度計算、性能基準測試、安全評估等
+
+## 執行方式
+
+```bash
+# 運行完整評估演示
+python evaluation_toolkit.py
+
+# 或導入工具包在Jupyter中使用
+from evaluation_toolkit import LLMEvaluationToolkit
+```
+
 ## 實驗內容
 
 ### 任務一：基礎評估工具設置

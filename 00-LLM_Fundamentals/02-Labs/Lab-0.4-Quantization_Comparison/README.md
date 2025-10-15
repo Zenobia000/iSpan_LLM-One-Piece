@@ -26,6 +26,21 @@
 
 ## 主要實驗內容
 
+## 實驗程式碼說明
+
+本Lab包含量化技術演示工具：
+- **`quantization_demo.py`**: 量化技術完整演示，包含精度格式、PTQ/QAT、效果對比等
+
+## 執行方式
+
+```bash
+# 運行完整量化演示
+python quantization_demo.py
+
+# 或在Jupyter中使用
+from quantization_demo import QuantizationDemo
+```
+
 ### 量化技術對比實驗
 
 ```python

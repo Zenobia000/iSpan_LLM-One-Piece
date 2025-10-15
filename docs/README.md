@@ -1,195 +1,61 @@
-# 專案文檔導航
-## Project Documentation Guide
+# 項目文檔導航
 
-**最後更新**: 2025-10-09
-**文檔版本**: v2.0
+## 📚 主要文檔位置
 
----
+### 總體課程介紹
+- **主README**: `/README.md` - 完整課程介紹和結構
+- **CLAUDE.md**: `/CLAUDE.md` - Claude Code使用指導
 
-## 📚 核心文檔 (Core Documents)
+### 各章節文檔
 
-### 1. 專案管理文檔
+#### 第0章：LLM基礎知識體系 ⭐ **[新增]**
+- **章節README**: `/00-LLM_Fundamentals/README.md`
+- **學習路徑**: `/00-LLM_Fundamentals/LEARNING_PATH.md`
+- **理論文檔**: `/00-LLM_Fundamentals/01-Theory/*/README.md`
+- **實踐Lab**: `/00-LLM_Fundamentals/02-Labs/Lab-*/README.md`
 
-#### project_dev_wbs.md
-**用途**: 專案工作分解結構 (Work Breakdown Structure)
-**更新頻率**: 持續更新
-**適用對象**: 專案經理, 開發團隊
+#### 第1章：核心訓練技術
+- **章節狀態**: `/01-Core_Training_Techniques/README.md`
+- **理論文檔**: `/01-Core_Training_Techniques/01-Theory/*/README.md`
+- **PEFT Labs**: `/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-*/README.md`
 
-**內容**:
-- 完整的 WBS 結構 (4層)
-- 各模組開發狀態
-- 資源分配與時程規劃
-- 風險管理
+#### 第2章：高效推理部署
+- **章節狀態**: `/02-Efficient_Inference_and_Serving/CHAPTER_02_STATUS.md`
+- **Triton狀態**: `/02-Efficient_Inference_and_Serving/CHAPTER_02_TRITON_STATUS.md`
+- **快速開始**: `/02-Efficient_Inference_and_Serving/QUICKSTART.md`
 
-**何時查閱**:
-- 了解專案整體結構
-- 查看模組開發狀態
-- 規劃新功能開發
+#### 第3章：模型壓縮 & 第4章：評估工程
+- 詳細文檔請查看對應章節目錄
 
----
+## 🛠️ 開發文檔
 
-#### project_status_report.md
-**用途**: 專案當前狀態報告
-**更新頻率**: 每週或里程碑後
-**適用對象**: 所有成員, 利害關係人
+### 環境配置
+- **Poetry環境**: `/00-Course_Setup/pyproject.toml` - 依賴管理
+- **GPU檢查**: `/01-PyTorch_Basics/check_gpu.py` - 環境驗證
 
-**內容**:
-- 執行摘要與關鍵成就
-- 各章節完成度
-- 里程碑達成狀況
-- 下一步行動
+### 共享工具
+- **第1章工具**: `/common_utils/` - PEFT訓練工具
+- **第0章工具**: `/00-LLM_Fundamentals/utils/` - 基礎分析工具
 
-**何時查閱**:
-- 快速了解專案進度
-- 查看最新完成成果
-- 了解當前優先任務
+## 📖 如何使用本項目
 
-**最新版本**: v1.2 (2025-10-09)
-- ✅ 第一章完成度 95%
-- ✅ 新增 5 個訓練優化實驗室
-- ✅ M1.0 里程碑達成
+### 新手入門
+1. 閱讀主`/README.md`了解完整課程結構
+2. 從第0章開始：`/00-LLM_Fundamentals/LEARNING_PATH.md`
+3. 按章節順序學習：0→1→2→3→4
 
----
+### 查找特定內容
+- **理論學習**: 查看各章節`01-Theory/`目錄
+- **實踐操作**: 查看各章節`02-Labs/`目錄
+- **環境問題**: 查看`/00-Course_Setup/`和`/01-PyTorch_Basics/`
+- **工具使用**: 查看`/common_utils/`或章節utils目錄
 
-#### next_tasks_roadmap.md
-**用途**: 下一步任務路線圖
-**更新頻率**: 每2週或階段性調整
-**適用對象**: 開發團隊
-
-**內容**:
-- 按優先級分類的任務清單 (P0-P3)
-- 詳細的任務分解與時程
-- 成功標準與交付物
-- Gantt Chart 時程規劃
-
-**何時查閱**:
-- 確認下一步要做什麼
-- 了解任務優先級
-- 查看詳細開發計畫
-
-**最新版本**: v2.1 (2025-10-09)
-- 🔴 P0: 跨平台測試 (進行中)
-- 🟠 P1: 性能基準測試
-- 🟡 P2: 第二章規劃
+### 貢獻改進
+- 按照各README中的說明進行環境設置
+- 遵循現有代碼風格和文檔格式
+- 提交前測試所有代碼功能
 
 ---
 
-### 2. 章節規劃文檔
-
-#### chapter_02_wbs_plan.md
-**用途**: 第二章 (推理部署) 詳細 WBS 規劃
-**更新頻率**: 開發前規劃, 開發中微調
-**適用對象**: 第二章開發團隊
-
-**內容**:
-- 理論文件規劃 (2個, 900-1100行)
-- 實驗室規劃 (5個, 19-20 notebooks)
-- 技術依賴與資源需求
-- 時程規劃 (8-10週)
-
-**何時查閱**:
-- 開始第二章開發前
-- 評估資源需求
-- 制定詳細開發計畫
-
-**狀態**: 📋 規劃完成, 待執行
-
----
-
-## 📁 歸檔文檔 (Archive)
-
-### archive/ 目錄
-存放不常更新的參考文檔與歷史記錄
-
-#### peft_lab_quality_standards.md
-- PEFT 實驗室品質檢核標準
-- 供品質審核使用
-- 已達成目標, 供未來參考
-
-#### cross_platform_testing_plan.md
-- 跨平台測試詳細計畫
-- 測試執行時參考
-- 完成後歸檔測試結果
-
-#### historical_reports/ (未來使用)
-- 歷史狀態報告
-- 過程審核記錄
-- 已整合到主文檔的內容
-
----
-
-## 📖 文檔使用指南
-
-### 新成員入門
-**推薦閱讀順序**:
-1. `project_status_report.md` - 了解當前狀態
-2. `project_dev_wbs.md` - 了解專案結構
-3. `next_tasks_roadmap.md` - 了解下一步任務
-
-### 開發新功能
-**參考文檔**:
-1. `project_dev_wbs.md` - 查看 WBS 結構
-2. `chapter_XX_wbs_plan.md` - 查看詳細規劃
-3. `next_tasks_roadmap.md` - 確認優先級
-
-### 里程碑檢查
-**參考文檔**:
-1. `project_status_report.md` - 里程碑達成狀況
-2. `project_dev_wbs.md` - 里程碑定義
-3. `next_tasks_roadmap.md` - 下一個里程碑計畫
-
----
-
-## 🔄 文檔維護規則
-
-### 更新頻率
-- **project_status_report.md**: 每週或重大里程碑後
-- **next_tasks_roadmap.md**: 每2週或優先級變動時
-- **project_dev_wbs.md**: 季度更新或重大變更時
-- **chapter_XX_wbs_plan.md**: 開發前規劃, 完成後歸檔
-
-### 版本控制
-- 所有文檔包含版本號與更新日期
-- 重大變更記錄在變更日誌
-- 歷史版本歸檔到 archive/historical_reports/
-
-### 命名規範
-- 核心文檔: `project_*.md`, `next_*.md`
-- 章節規劃: `chapter_XX_*.md`
-- 歸檔文檔: `archive/*.md`
-
----
-
-## 📝 文檔撰寫指南
-
-### 文檔結構
-1. **標題區**: 包含版本、日期、狀態
-2. **摘要區**: 執行摘要或概述
-3. **主要內容**: 章節化組織
-4. **結論區**: 總結與下一步
-5. **元數據**: 版本、作者、變更日誌
-
-### Markdown 規範
-- 使用 emoji 提升可讀性
-- 表格對齊整齊
-- 代碼塊標註語言
-- 清晰的層級結構
-
----
-
-## 🗂️ 文檔索引
-
-| 文檔 | 類型 | 更新頻率 | 最新版本 | 狀態 |
-|------|------|---------|---------|------|
-| project_dev_wbs.md | 核心-WBS | 季度 | v2.0 | ✅ 活躍 |
-| project_status_report.md | 核心-狀態 | 週度 | v1.2 | ✅ 活躍 |
-| next_tasks_roadmap.md | 核心-任務 | 雙週 | v2.1 | ✅ 活躍 |
-| chapter_02_wbs_plan.md | 規劃 | 單次 | v1.0 | 📋 規劃 |
-| archive/peft_lab_quality_standards.md | 參考 | - | v1.0 | 📁 歸檔 |
-| archive/cross_platform_testing_plan.md | 參考 | - | v1.0 | 📁 歸檔 |
-
----
-
-**維護者**: LLM 教學專案團隊
-**文檔規範版本**: v2.0
-**最後審核**: 2025-10-09
+**最後更新**: 2025-10-15
+**維護者**: LLM工程化課程團隊

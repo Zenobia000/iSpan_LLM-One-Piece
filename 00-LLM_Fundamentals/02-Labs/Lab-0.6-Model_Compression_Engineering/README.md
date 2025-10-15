@@ -25,6 +25,24 @@
 - BitsAndBytes、ONNX Runtime
 - 已激活的poetry虛擬環境
 
+## 實驗資源說明
+
+本Lab包含完整的工程化壓縮資源：
+- **`compression_lab.py`**: 主實驗腳本，演示端到端壓縮流程
+- **`MODEL_COMPRESSION_ENGINEERING.md`**: ⭐ **工程化實用指南** - 包含硬體匹配公式、決策表、快速工具
+
+## 執行方式
+
+```bash
+# 1. 先閱讀工程化指南（強烈推薦）
+cat MODEL_COMPRESSION_ENGINEERING.md
+
+# 2. 運行完整實驗
+python compression_lab.py
+```
+
+> 💡 **建議學習順序**: 先學習理論專論0.4和0.5，再閱讀工程化指南，最後執行實驗
+
 ## 實驗內容
 
 ### 核心實驗腳本

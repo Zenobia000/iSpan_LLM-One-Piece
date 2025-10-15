@@ -57,8 +57,9 @@
 │   ├── __init__.py             # 模組初始化
 │   └── model_utils.py          # 模型操作工具
 ├── LEARNING_PATH.md             # 📖 學習路徑指導
-├── MODEL_COMPRESSION_ENGINEERING.md # ⚡ 快速工程化指南
 └── README.md                    # 📋 本文件
+
+**Note**: 工程化壓縮指南已移至 `02-Labs/Lab-0.6-Model_Compression_Engineering/MODEL_COMPRESSION_ENGINEERING.md`
 ```
 
 ## 先備知識

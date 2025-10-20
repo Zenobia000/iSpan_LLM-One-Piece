@@ -16,6 +16,7 @@ from typing import Dict, List, Tuple
 import time
 import json
 from datetime import datetime
+import logging
 
 class LLMEvaluationToolkit:
     """LLM評估工具包"""
@@ -99,12 +100,13 @@ class LLMEvaluationToolkit:
             {"text": "價格合理，性能不錯。", "label": 1}          # 正面
         ]
 
-        # 使用pipeline進行情感分析
+        # 修正：為情感分析任務載入專用模型
+        # The original model is generative and not suitable for this classification task.
+        sentiment_model_name = "uer/roberta-base-finetuned-dianping-chinese"
         classifier = pipeline(
             "sentiment-analysis",
-            model=model,
-            tokenizer=tokenizer,
-            device=0 if torch.cuda.is_available() else -1
+            model=sentiment_model_name,
+            tokenizer=sentiment_model_name
         )
 
         predictions = []
@@ -113,8 +115,9 @@ class LLMEvaluationToolkit:
         for item in test_data:
             try:
                 result = classifier(item['text'])
-                # 將POSITIVE/NEGATIVE轉換為1/0
-                pred_label = 1 if result[0]['label'] == 'POSITIVE' else 0
+                # 修正：精確匹配 'positive' 標籤（小寫）
+                pred_label_str = result[0]['label'].lower()
+                pred_label = 1 if pred_label_str == 'positive' else 0
                 predictions.append(pred_label)
                 true_labels.append(item['label'])
 
@@ -155,12 +158,14 @@ class LLMEvaluationToolkit:
                 "answer": "通過算法從數據中學習"
             }
         ]
-
+        
+        # 修正：為問答任務載入專用模型
+        # The original model is generative and not suitable for this QA task.
+        qa_model_name = "luhua/chinese-macbert-base-qa"
         qa_pipeline = pipeline(
             "question-answering",
-            model=model,
-            tokenizer=tokenizer,
-            device=0 if torch.cuda.is_available() else -1
+            model=qa_model_name,
+            tokenizer=qa_model_name
         )
 
         results = []
@@ -222,8 +227,7 @@ class LLMEvaluationToolkit:
         generator = pipeline(
             "text-generation",
             model=model,
-            tokenizer=tokenizer,
-            device=0 if torch.cuda.is_available() else -1
+            tokenizer=tokenizer
         )
 
         generation_results = []
@@ -233,7 +237,7 @@ class LLMEvaluationToolkit:
                 # 生成多個版本用於評估多樣性
                 responses = generator(
                     prompt,
-                    max_length=len(prompt.split()) + 50,
+                    max_new_tokens=50,
                     num_return_sequences=3,
                     temperature=0.7,
                     do_sample=True,
@@ -447,7 +451,7 @@ class LLMEvaluationToolkit:
                         # 第一個token的時間
                         first_token_outputs = model.generate(
                             **inputs,
-                            max_length=inputs['input_ids'].shape[1] + 1,
+                            max_new_tokens=1,
                             do_sample=False,
                             pad_token_id=tokenizer.eos_token_id
                         )
@@ -459,7 +463,7 @@ class LLMEvaluationToolkit:
 
                     outputs = model.generate(
                         **inputs,
-                        max_length=inputs['input_ids'].shape[1] + 20,
+                        max_new_tokens=20,
                         temperature=0.7,
                         do_sample=True,
                         pad_token_id=tokenizer.eos_token_id
@@ -595,13 +599,12 @@ class LLMEvaluationToolkit:
             generator = pipeline(
                 "text-generation",
                 model=model,
-                tokenizer=tokenizer,
-                device=0 if torch.cuda.is_available() else -1
+                tokenizer=tokenizer
             )
 
             response = generator(
                 prompt,
-                max_length=len(prompt.split()) + 30,
+                max_new_tokens=30,
                 temperature=0.3,
                 do_sample=True,
                 pad_token_id=tokenizer.eos_token_id
@@ -643,7 +646,7 @@ class LLMEvaluationToolkit:
             tokenizer = AutoTokenizer.from_pretrained(model_name)
             model = AutoModelForCausalLM.from_pretrained(
                 model_name,
-                torch_dtype=torch.float16,
+                dtype=torch.float16,
                 device_map="auto"
             )
 
@@ -799,7 +802,7 @@ class LLMEvaluationToolkit:
         ax.fill(angles, values, alpha=0.25)
 
         ax.set_xticks(angles[:-1])
-        ax.set_xticklabels([cat.replace('_score', '') for cat in categories[:-1]])
+        ax.set_xticklabels([cat.replace('_score', '') for cat in categories])
         ax.set_ylim(0, 1)
 
         plt.title('LLM綜合評估雷達圖', size=16, y=1.1)
@@ -813,6 +816,8 @@ class LLMEvaluationToolkit:
 
 def main():
     """主函數 - 評估工具包演示"""
+    # Suppress the specific warning from the transformers library
+    logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
 
     print("LLM評估指標工具包演示")
     print("=" * 50)
@@ -820,8 +825,8 @@ def main():
     # 初始化工具包
     toolkit = LLMEvaluationToolkit()
 
-    # 使用小模型進行演示
-    model_name = "microsoft/DialoGPT-small"
+    # 修正：使用與評估文本匹配的中文模型進行演示
+    model_name = "uer/gpt2-chinese-cluecorpussmall"
     print(f"演示模型: {model_name}")
 
     # 運行全面評估

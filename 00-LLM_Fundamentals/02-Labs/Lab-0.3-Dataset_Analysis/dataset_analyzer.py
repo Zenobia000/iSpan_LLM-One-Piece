@@ -542,6 +542,47 @@ class DatasetAnalyzer:
             ])
         }
 
+    def _analyze_instruction_complexity(self, dataset) -> Dict:
+        """分析指令複雜度"""
+
+        instructions = dataset['instruction']
+        
+        complexity_keywords = {
+            '高': ['分析', '評估', '比較', '設計', '創建', '論證', '推導'],
+            '中': ['解釋', '總結', '轉換', '編寫', '分類', '應用'],
+            '低': ['列舉', '定義', '找出', '什麼是', '誰是', '列出']
+        }
+
+        complexity_counts = Counter()
+
+        for instruction in instructions:
+            instruction_lower = instruction.lower()
+            categorized = False
+            for level, keywords in complexity_keywords.items():
+                if any(keyword in instruction_lower for keyword in keywords):
+                    complexity_counts[level] += 1
+                    categorized = True
+                    break
+            if not categorized:
+                complexity_counts['未知'] += 1
+
+        total = len(instructions)
+        complexity_distribution = {
+            level: count / total * 100
+            for level, count in complexity_counts.items()
+        }
+
+        # Calculate a weighted complexity score
+        score_mapping = {'高': 3, '中': 2, '低': 1, '未知': 1.5}
+        weighted_score = sum(complexity_counts[level] * score_mapping[level] for level in complexity_counts) / total if total > 0 else 0
+
+
+        return {
+            'complexity_counts': dict(complexity_counts),
+            'complexity_distribution': complexity_distribution,
+            'average_complexity_score': weighted_score # Scale could be 1-3
+        }
+
     def _detect_instruction_quality_issues(self, dataset) -> Dict:
         """檢測指令質量問題"""
 
@@ -630,6 +671,90 @@ class DatasetAnalyzer:
 
         return balance_score
 
+    def _analyze_preference_consistency(self, dataset) -> Dict:
+        """分析偏好一致性 (模擬)"""
+        # 在真實場景中，這需要多個標註者的數據來計算 Fleiss' Kappa 或 Krippendorff's Alpha
+        # 這裡我們模擬一個高一致性分數
+        
+        # 檢查是否有明顯的矛盾 (例如，相同 prompt 和 responses 但偏好不同)
+        seen = {}
+        conflicts = 0
+        for item in dataset:
+            key = (item['prompt'], item['response_a'], item['response_b'])
+            if key in seen and seen[key] != item['preference']:
+                conflicts += 1
+            seen[key] = item['preference']
+
+        total_pairs = len(dataset)
+        consistency_score = (total_pairs - conflicts) / total_pairs if total_pairs > 0 else 1.0
+        
+        return {
+            'consistency_score': consistency_score, # 模擬 Fleiss' Kappa
+            'conflicts_found': conflicts,
+            'note': 'This is a simulated consistency score. Real-world analysis requires multi-annotator data.'
+        }
+
+    def _analyze_response_quality(self, dataset) -> Dict:
+        """分析回答質量"""
+        
+        chosen_responses = []
+        rejected_responses = []
+
+        for item in dataset:
+            if item['preference'] == 'A':
+                chosen_responses.append(item['response_a'])
+                rejected_responses.append(item['response_b'])
+            else:
+                chosen_responses.append(item['response_b'])
+                rejected_responses.append(item['response_a'])
+
+        def get_quality_stats(responses):
+            if not responses:
+                return {'avg_length': 0, 'avg_word_count': 0}
+            lengths = [len(r) for r in responses]
+            words = [len(r.split()) for r in responses]
+            return {
+                'avg_length': np.mean(lengths),
+                'avg_word_count': np.mean(words)
+            }
+
+        chosen_stats = get_quality_stats(chosen_responses)
+        rejected_stats = get_quality_stats(rejected_responses)
+
+        return {
+            'chosen_response_stats': chosen_stats,
+            'rejected_response_stats': rejected_stats,
+            'avg_length_delta': chosen_stats['avg_length'] - rejected_stats['avg_length'],
+        }
+
+    def _analyze_safety_aspects(self, dataset) -> Dict:
+        """分析安全性問題"""
+
+        safety_keywords = ['暴力', '色情', '歧視', '危險', '非法']
+        
+        issues_found = 0
+        issue_details = []
+
+        for i, item in enumerate(dataset):
+            prompt = item['prompt']
+            resp_a = item['response_a']
+            resp_b = item['response_b']
+            
+            for keyword in safety_keywords:
+                if keyword in prompt or keyword in resp_a or keyword in resp_b:
+                    issues_found += 1
+                    issue_details.append(f"樣本{i}: 發現潛在不安全關鍵詞 '{keyword}'")
+                    break # Move to next item once an issue is found
+
+        total_samples = len(dataset)
+        safety_score = (total_samples - issues_found) / total_samples if total_samples > 0 else 1.0
+
+        return {
+            'potential_safety_issues_count': issues_found,
+            'safety_score': safety_score, # 0-1, 1 is best
+            'issue_details': issue_details[:10] # show first 10 issues
+        }
+
     def compare_datasets(self, dataset_results: List[Dict]) -> Dict:
         """對比多個數據集"""
 
@@ -645,29 +770,39 @@ class DatasetAnalyzer:
                 '樣本數': result['dataset_info']['total_samples']
             }
 
-            # 基礎統計
-            if 'basic_statistics' in result:
-                stats = result['basic_statistics']
-                row['平均長度'] = f"{stats['avg_char_length']:.0f}"
-                row['平均詞數'] = f"{stats['avg_word_count']:.0f}"
+            # 基礎統計 (主要用於預訓練)
+            stats = result.get('basic_statistics')
+            if stats:
+                row['平均長度'] = f"{stats.get('avg_char_length', 0):.0f}"
+                row['平均詞數'] = f"{stats.get('avg_word_count', 0):.0f}"
+            else:
+                row['平均長度'] = 'N/A'
+                row['平均詞數'] = 'N/A'
 
-            # 質量評分
-            if 'content_quality' in result:
-                quality = result['content_quality']
-                row['質量評分'] = f"{quality['overall_quality_score']:.3f}"
-                row['質量等級'] = quality['quality_grade']
+            # 質量評分 (用於預訓練和指令)
+            quality = result.get('content_quality') or result.get('quality_issues')
+            if quality:
+                row['質量評分'] = f"{quality.get('overall_quality_score', 0):.3f}"
+                row['質量等級'] = quality.get('quality_grade', 'N/A')
+            else:
+                row['質量評分'] = 'N/A'
+                row['質量等級'] = 'N/A'
 
-            # 語言分佈
-            if 'language_distribution' in result:
-                lang_dist = result['language_distribution']
+            # 語言分佈 (主要用於預訓練)
+            lang_dist = result.get('language_distribution')
+            if lang_dist and lang_dist.get('dominant_language'):
                 dominant_lang = lang_dist.get('dominant_language')
-                if dominant_lang:
-                    row['主要語言'] = f"{dominant_lang[0]} ({dominant_lang[1]}次)"
+                row['主要語言'] = f"{dominant_lang[0]} ({dominant_lang[1]}次)"
+            else:
+                row['主要語言'] = 'N/A'
 
-            # 詞彙多樣性
-            if 'vocabulary_analysis' in result:
-                vocab = result['vocabulary_analysis']['vocabulary_stats']
-                row['詞彙多樣性'] = f"{vocab['vocabulary_diversity']:.3f}"
+            # 詞彙多樣性 (主要用於預訓練)
+            vocab_analysis = result.get('vocabulary_analysis')
+            if vocab_analysis and vocab_analysis.get('vocabulary_stats'):
+                vocab_stats = vocab_analysis.get('vocabulary_stats')
+                row['詞彙多樣性'] = f"{vocab_stats.get('vocabulary_diversity', 0):.3f}"
+            else:
+                row['詞彙多樣性'] = 'N/A'
 
             comparison_data.append(row)
 
@@ -686,25 +821,27 @@ class DatasetAnalyzer:
 
         # 分析樣本規模差異
         sample_sizes = [r['dataset_info']['total_samples'] for r in results]
-        if max(sample_sizes) / min(sample_sizes) > 10:
+        if len(sample_sizes) > 1 and min(sample_sizes) > 0 and max(sample_sizes) / min(sample_sizes) > 10:
             insights.append("數據集規模差異巨大，需要考慮平衡性")
 
         # 分析質量差異
         quality_scores = []
         for r in results:
-            if 'content_quality' in r:
-                quality_scores.append(r['content_quality']['overall_quality_score'])
+            quality = r.get('content_quality') or r.get('quality_issues')
+            if quality and 'overall_quality_score' in quality:
+                quality_scores.append(quality['overall_quality_score'])
 
-        if quality_scores and max(quality_scores) - min(quality_scores) > 0.3:
+        if len(quality_scores) > 1 and max(quality_scores) - min(quality_scores) > 0.3:
             insights.append("數據集質量差異顯著，建議優先使用高質量數據")
 
         # 分析多樣性
         diversity_scores = []
         for r in results:
-            if 'vocabulary_analysis' in r:
-                diversity_scores.append(r['vocabulary_analysis']['vocabulary_stats']['vocabulary_diversity'])
+            vocab_analysis = r.get('vocabulary_analysis')
+            if vocab_analysis and 'vocabulary_stats' in vocab_analysis:
+                diversity_scores.append(vocab_analysis['vocabulary_stats']['vocabulary_diversity'])
 
-        if diversity_scores and np.std(diversity_scores) > 0.1:
+        if len(diversity_scores) > 1 and np.std(diversity_scores) > 0.1:
             insights.append("詞彙多樣性差異明顯，可能影響模型泛化能力")
 
         return insights
@@ -718,8 +855,9 @@ class DatasetAnalyzer:
             dataset_name = result['dataset_info']['name']
 
             # 基於質量評分的建議
-            if 'content_quality' in result:
-                quality_score = result['content_quality']['overall_quality_score']
+            quality = result.get('content_quality') or result.get('quality_issues')
+            if quality and 'overall_quality_score' in quality:
+                quality_score = quality['overall_quality_score']
                 if quality_score > 0.8:
                     recommendations.append(f"✅ {dataset_name}: 質量優秀，推薦使用")
                 elif quality_score > 0.6:
@@ -728,8 +866,9 @@ class DatasetAnalyzer:
                     recommendations.append(f"❌ {dataset_name}: 質量較差，需要大量清洗")
 
             # 基於多樣性的建議
-            if 'vocabulary_analysis' in result:
-                diversity = result['vocabulary_analysis']['vocabulary_stats']['vocabulary_diversity']
+            vocab_analysis = result.get('vocabulary_analysis')
+            if vocab_analysis and 'vocabulary_stats' in vocab_analysis:
+                diversity = vocab_analysis['vocabulary_stats']['vocabulary_diversity']
                 if diversity > 0.7:
                     recommendations.append(f"✅ {dataset_name}: 詞彙多樣性良好")
                 else:
@@ -800,6 +939,76 @@ class DatasetAnalyzer:
         plt.tight_layout()
         plt.savefig('pretraining_dataset_analysis.png', dpi=300, bbox_inches='tight')
         plt.show()
+
+    def _visualize_instruction_analysis(self):
+        """可視化指令數據分析"""
+
+        if 'instruction_dataset' not in self.analysis_results:
+            print("沒有指令數據分析結果")
+            return
+
+        result = self.analysis_results['instruction_dataset']
+
+        fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+        fig.suptitle('Instruction Dataset Analysis', fontsize=16)
+
+        # 1. 指令類型分佈
+        if 'instruction_types' in result and result['instruction_types'].get('type_counts'):
+            types = result['instruction_types']['type_counts']
+            categories = list(types.keys())
+            values = list(types.values())
+
+            axes[0, 0].bar(categories, values, color='cornflowerblue')
+            axes[0, 0].set_title('指令類型分佈')
+            axes[0, 0].set_ylabel('數量')
+            axes[0, 0].tick_params(axis='x', labelrotation=45)
+
+        # 2. 長度分佈
+        if 'length_distribution' in result and result['length_distribution'].get('length_statistics'):
+            stats = result['length_distribution']['length_statistics']
+            lengths = ['指令', '輸入', '輸出']
+            avg_lengths = [
+                stats.get('instruction_lengths', {}).get('avg_length', 0),
+                stats.get('input_lengths', {}).get('avg_length', 0),
+                stats.get('output_lengths', {}).get('avg_length', 0)
+            ]
+
+            axes[0, 1].bar(lengths, avg_lengths, color=['skyblue', 'lightgreen', 'salmon'])
+            axes[0, 1].set_title('平均長度對比')
+            axes[0, 1].set_ylabel('平均字符數')
+
+        # 3. 質量問題分佈
+        if 'quality_issues' in result:
+            quality = result['quality_issues']
+            issues = ['過短指令', '過短輸出', '過長輸出', '重複輸出', '不完整輸出']
+            counts = [
+                quality.get('very_short_instructions', 0),
+                quality.get('very_short_outputs', 0),
+                quality.get('very_long_outputs', 0),
+                quality.get('repetitive_outputs', 0),
+                quality.get('incomplete_outputs', 0)
+            ]
+
+            axes[1, 0].bar(issues, counts, color='orange', alpha=0.7)
+            axes[1, 0].set_title('質量問題統計')
+            axes[1, 0].set_ylabel('問題數量')
+            axes[1, 0].tick_params(axis='x', labelrotation=45)
+
+        # 4. 指令複雜度
+        if 'complexity_analysis' in result and result['complexity_analysis'].get('complexity_counts'):
+            complexity = result['complexity_analysis']['complexity_counts']
+            comp_types = list(complexity.keys())
+            comp_values = list(complexity.values())
+
+            axes[1, 1].pie(comp_values, labels=comp_types, autopct='%1.1f%%', startangle=90)
+            axes[1, 1].set_title('指令複雜度分佈')
+            axes[1, 1].axis('equal') 
+
+
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        plt.savefig('instruction_dataset_analysis.png', dpi=300, bbox_inches='tight')
+        plt.show()
+        print("指令數據集分析圖表已保存: instruction_dataset_analysis.png")
 
     def generate_analysis_report(self) -> str:
         """生成綜合分析報告"""
@@ -929,6 +1138,7 @@ def main():
     print("📁 結果文件:")
     print("   - dataset_analysis_report.md (綜合報告)")
     print("   - pretraining_dataset_analysis.png (可視化圖表)")
+    print("   - instruction_dataset_analysis.png (可視化圖表)")
 
     print("\n🎓 學習要點:")
     print("1. 數據質量比數據量更重要")

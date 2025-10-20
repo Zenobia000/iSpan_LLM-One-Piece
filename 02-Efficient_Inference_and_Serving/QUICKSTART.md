@@ -1,6 +1,5 @@
 # Chapter 2: Efficient Inference & Serving - Quick Start Guide
-
-## 快速開始
+## 雙軌道架構快速開始
 
 ### 1. 環境準備
 
@@ -14,54 +13,56 @@ poetry install --all-extras
 
 # 可選: Flash Attention
 pip install flash-attn --no-build-isolation
+
+# Triton Server (需要 Docker)
+docker pull nvcr.io/nvidia/tritonserver:24.08-py3
 ```
 
-### 2. 學習路徑
+### 2. 選擇學習路徑
 
-#### 第一週: 理論基礎 + vLLM 部署
+#### 🎯 基礎路徑 (vLLM Track) - 推薦新手
+適合快速原型開發和個人項目
+
 ```bash
-# 1. 閱讀理論文件
+# 1. 理論基礎
 cat 01-Theory/2.1-Inference_Engines.md
 cat 01-Theory/2.2-Serving_and_Optimization.md
 
-# 2. 開始 Lab-2.1
-cd 02-Labs/Lab-2.1-vLLM_Deployment
-jupyter lab
-
-# 執行順序:
-# - 01-Setup_and_Installation.ipynb
-# - 02-Basic_Inference.ipynb  
-# - 03-Advanced_Features.ipynb
-# - 04-Production_Deployment.ipynb
+# 2. vLLM 軌道 (依序執行)
+cd 02-Labs/vLLM_Track/Lab-2.1-vLLM_Deployment
+cd 02-Labs/vLLM_Track/Lab-2.2-Inference_Optimization
+cd 02-Labs/vLLM_Track/Lab-2.3-FastAPI_Service
+cd 02-Labs/vLLM_Track/Lab-2.4-Production_Deployment
+cd 02-Labs/vLLM_Track/Lab-2.5-Performance_Monitoring
 ```
 
-#### 第二週: 推理優化
-```bash
-cd 02-Labs/Lab-2.2-Inference_Optimization
-jupyter lab
+#### 🏢 企業路徑 (Triton Track) - 推薦有經驗者
+適合企業級平台開發和 MLOps 工程師
 
-# 執行順序:
-# - 01-KV_Cache_Optimization.ipynb
-# - 02-Speculative_Decoding.ipynb
-# - 03-Quantization_Inference.ipynb
-# - 04-Comprehensive_Optimization.ipynb
+```bash
+# 1. 理論基礎 (重點企業級架構)
+cat 01-Theory/2.2-Serving_and_Optimization.md
+
+# 2. Triton 軌道 (依序執行)
+cd 02-Labs/Triton_Track/Lab-2.1-Triton_Server_Basics
+cd 02-Labs/Triton_Track/Lab-2.2-Multi_Model_Management
+cd 02-Labs/Triton_Track/Lab-2.3-Backend_Integration
+cd 02-Labs/Triton_Track/Lab-2.4-Enterprise_Features
+cd 02-Labs/Triton_Track/Lab-2.5-Production_Operations
 ```
 
-#### 第三週: FastAPI 服務
-```bash
-cd 02-Labs/Lab-2.3-FastAPI_Service
-jupyter lab
+#### 🚀 完整路徑 (Both Tracks) - 推薦專業進階
+適合 AI Infrastructure Engineer 和技術主管
 
-# 執行順序:
-# - 01-Basic_API.ipynb
-# - 02-Async_Processing.ipynb
-# - 03-Integration_with_vLLM.ipynb
-# - 04-Monitoring_and_Deploy.ipynb
+```bash
+# Phase 1: vLLM 基礎 (4週)
+# Phase 2: Triton 企業級 (4週)
+# Phase 3: 整合與對比 (2週)
 ```
 
 ### 3. 核心技能檢查表
 
-完成本章後，你應該能夠:
+#### vLLM Track 技能
 - ✅ 部署並優化 vLLM 推理引擎
 - ✅ 理解 PagedAttention 原理
 - ✅ 實現 Speculative Decoding (1.5-3x 加速)
@@ -69,6 +70,15 @@ jupyter lab
 - ✅ 構建 FastAPI 服務
 - ✅ 集成 Prometheus 監控
 - ✅ 使用 Docker 部署
+
+#### Triton Track 技能
+- ✅ 部署和配置 Triton Inference Server
+- ✅ 設計多模型倉庫架構
+- ✅ 實現 A/B 測試和版本控制
+- ✅ 整合多種 Backend (PyTorch/TensorRT/vLLM)
+- ✅ 開發模型組合 (Ensemble)
+- ✅ 實施企業級監控和運維
+- ✅ 使用 Kubernetes 進行生產部署
 
 ### 4. 常見問題
 
@@ -100,5 +110,16 @@ def root():
 
 ---
 
-**最後更新**: 2025-10-09
-**適用版本**: Chapter 2 v0.3.0
+### 6. 軌道選擇建議
+
+| 背景 | 推薦軌道 | 理由 |
+|------|----------|------|
+| 初學者/個人項目 | vLLM Track | 學習曲線平緩，快速上手 |
+| 有ML經驗 | 先 vLLM 後 Triton | 循序漸進，技能互補 |
+| 企業環境/MLOps | Triton Track | 直接對應工作需求 |
+| 技術主管/架構師 | Both Tracks | 完整技術視野 |
+
+---
+
+**最後更新**: 2025-10-16
+**適用版本**: Chapter 2 v4.0 (雙軌道架構)

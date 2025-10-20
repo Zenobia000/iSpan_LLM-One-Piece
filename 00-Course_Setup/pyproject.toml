@@ -52,6 +52,8 @@ vllm = ">=0.6.0"
 
 # flash-attn 需要從源碼編譯，不通過 Poetry 管理
 # 安裝方式: pip install flash-attn --no-build-isolation
+auto-gptq = "^0.7.1"
+autoawq = "^0.2.9"
 
 [[tool.poetry.source]]
 name = "pytorch-cu124"

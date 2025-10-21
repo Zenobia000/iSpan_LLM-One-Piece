@@ -54,6 +54,11 @@ vllm = ">=0.6.0"
 # 安裝方式: pip install flash-attn --no-build-isolation
 auto-gptq = "^0.7.1"
 autoawq = "^0.2.9"
+streamlit = "^1.50.0"
+langdetect = "^1.0.9"
+wordcloud = "^1.9.4"
+jieba = "^0.42.1"
+textstat = "^0.7.10"
 
 [[tool.poetry.source]]
 name = "pytorch-cu124"

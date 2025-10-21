@@ -171,3 +171,4 @@ cython_debug/
 # Cache directories for datasets and models
 /mnt/d/Pretrained_models/
 .cache/
+\n# Model folders\n01-Core_Training_Techniques/02-Labs/Lab-1.1-PEFT_with_HuggingFace/llama2-7b-chat-guanaco-merged/\n01-Core_Training_Techniques/02-Labs/Lab-1.1-PEFT_with_HuggingFace/lora-llama2-7b-chat/

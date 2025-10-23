@@ -1,22 +1,24 @@
 [tool.poetry]
 name = "llm-engineering-course"
-version = "0.3.0"
+version = "0.3.1"
 description = "Advanced LLM Engineering Course - Training, Optimization, Inference & Serving"
 authors = ["LLM Teaching Project Team <noreply@example.com>"]
 readme = "README.md"
 package-mode = false
 
+# 環境要求說明:
+# - Python: 3.10-3.12
+# - CUDA: 12.4+ (系統安裝)
+# - GPU: compute capability >= 7.5 (推薦 Ampere 架構以上)
+# - 記憶體: 16GB+ GPU VRAM (用於 7B 模型訓練)
+
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-
-# PyTorch with CUDA 12.4 (>= 2.6 required)
-torch = {version = ">=2.6.0", source = "pytorch-cu124"}
-torchvision = {version = ">=0.21.0", source = "pytorch-cu124"}
-torchaudio = {version = ">=2.6.0", source = "pytorch-cu124"}
 
 # Core Libraries
 datasets = ">=2.14.0"
 accelerate = ">=0.24.0"
+deepspeed = ">=0.12.0"
 
 # Inference & Serving (Chapter 2)
 fastapi = ">=0.104.0"
@@ -47,23 +49,62 @@ protobuf = ">=3.20.0"
 # Jupyter kernel
 ipykernel = "^6.29.0"
 
-# Inference engines (Chapter 2)
-vllm = ">=0.6.0"
+# PyTorch with CUDA support - 鎖定版本防止被覆蓋
+# 警告: 不要使用 poetry update torch，會安裝 CPU 版本！
+# 手動安裝命令: pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio==2.8.0+cu128 --index-url https://download.pytorch.org/whl/cu128
+torch = "2.8.0+cu128"
+torchvision = "0.23.0+cu128"
+torchaudio = "2.8.0+cu128"
 
-# flash-attn 需要從源碼編譯，不通過 Poetry 管理
-# 安裝方式: pip install flash-attn --no-build-isolation
+[[tool.poetry.source]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+priority = "explicit"
+
+# Flash-Attn build dependencies (從源碼編譯)
+packaging = "^24.0"
+ninja = "^1.11.1"
+wheel = "^0.45.0"
+
+# 模型壓縮與推理加速
 auto-gptq = "^0.7.1"
 autoawq = "^0.2.9"
+vllm = "^0.11.0"
+
+# 應用開發
 streamlit = "^1.50.0"
 langdetect = "^1.0.9"
 wordcloud = "^1.9.4"
 jieba = "^0.42.1"
 textstat = "^0.7.10"
 
-[[tool.poetry.source]]
-name = "pytorch-cu124"
-url = "https://download.pytorch.org/whl/cu124"
-priority = "explicit"
+# flash-attn 2.8.3 - 從源碼編譯安裝
+# 安裝指令: MAX_JOBS=4 pip install flash-attn --no-build-isolation --no-cache-dir
+# 注意: 需要 CUDA 12.4+ 和 compute capability >= 7.5
+
+# =============================================================================
+# 環境設置指南 (Environment Setup Guide)
+# =============================================================================
+#
+# 1. 安裝基礎依賴:
+#    poetry install --no-root --all-extras
+#
+# 2. 安裝 PyTorch (CUDA 12.8):
+#    pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio==2.8.0+cu128 --index-url https://download.pytorch.org/whl/cu128
+#
+# 3. 安裝 FlashAttention (從源碼編譯):
+#    MAX_JOBS=4 pip install flash-attn --no-build-isolation --no-cache-dir
+#
+# 4. 驗證安裝:
+#    python -c "import torch, flash_attn; print(f'PyTorch: {torch.__version__}, FlashAttention: {flash_attn.__version__}')"
+#
+# 當前測試環境:
+# - OS: Linux (WSL2)
+# - CUDA: 12.4/12.8
+# - GPU: NVIDIA RTX 2000 Ada Generation (16GB, compute capability 8.9)
+# - PyTorch: 2.8.0+cu128
+# - FlashAttention: 2.8.3
+# =============================================================================
 
 [build-system]
 requires = ["poetry-core"]

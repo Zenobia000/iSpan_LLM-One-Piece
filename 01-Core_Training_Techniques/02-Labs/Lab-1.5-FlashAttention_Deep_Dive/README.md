@@ -84,6 +84,309 @@ FlashAttention 策略:
 
 ---
 
+## 📖 FlashAttention 精度匹配實用指南
+
+### 在 FlashAttention 環境下的精度一致性需求
+
+在使用 FlashAttention 時，不同層之間的精度匹配策略決定了模型的數值穩定性與性能。本節從實用角度分析哪些精度需要一致，哪些可以不一致，以及背後的技術原因。
+
+#### FlashAttention 的核心精度約束
+
+```python
+# FlashAttention 核心約束
+flash_attn_func(Q, K, V)  # 只接受 FP16/BF16，拒絕 FP32
+```
+
+**關鍵限制**:
+- **硬約束**: Q、K、V 三個張量必須是相同的低精度格式 (FP16 或 BF16)
+- **內核優化**: FlashAttention CUDA 內核針對低精度優化，不支援 FP32
+- **記憶體效率**: 低精度是 FlashAttention 記憶體優勢的核心
+
+#### 必須保持精度一致的層級
+
+##### 1. Attention 計算鏈路 (嚴格一致)
+
+```python
+# ✅ 正確：Q、K、V 精度一致
+def attention_forward(hidden_states):
+    # 所有投影層輸出保持 FP16
+    Q = self.q_proj(hidden_states)  # FP16 → FP16
+    K = self.k_proj(hidden_states)  # FP16 → FP16
+    V = self.v_proj(hidden_states)  # FP16 → FP16
+
+    # FlashAttention 要求三者精度匹配
+    attention_output = flash_attn_func(Q, K, V)  # FP16
+
+    return self.out_proj(attention_output)  # FP16 → FP16
+
+# ❌ 錯誤：精度不匹配
+def broken_attention(hidden_states):
+    Q = self.q_proj(hidden_states).float()  # FP32
+    K = self.k_proj(hidden_states)          # FP16
+    V = self.v_proj(hidden_states)          # FP16
+
+    # TypeError: FlashAttention 無法處理混合精度
+    return flash_attn_func(Q, K, V)
+```
+
+**技術原因**:
+- FlashAttention CUDA 內核針對特定數據類型編譯
+- 混合精度會觸發昂貴的類型轉換
+- GPU 記憶體對齊要求精度一致
+
+##### 2. Attention 權重矩陣 (建議一致)
+
+```python
+class AttentionLayer(nn.Module):
+    def __init__(self, hidden_size, num_heads):
+        super().__init__()
+        # ✅ 所有線性層權重使用相同精度
+        self.q_proj = nn.Linear(hidden_size, hidden_size, dtype=torch.float16)
+        self.k_proj = nn.Linear(hidden_size, hidden_size, dtype=torch.float16)
+        self.v_proj = nn.Linear(hidden_size, hidden_size, dtype=torch.float16)
+        self.out_proj = nn.Linear(hidden_size, hidden_size, dtype=torch.float16)
+```
+
+**實用考量**:
+- 避免前向傳播中的隱式類型轉換
+- 減少數值誤差累積
+- 簡化調試與性能分析
+
+#### 可以精度不一致的組件
+
+##### 1. LayerNorm 統計計算 (建議 FP32)
+
+```python
+# ✅ 推薦模式：統計用 FP32，權重用 FP16
+class MixedPrecisionLayerNorm(nn.Module):
+    def __init__(self, hidden_size, eps=1e-5):
+        super().__init__()
+        # 權重與偏置可以是 FP16
+        self.weight = nn.Parameter(torch.ones(hidden_size, dtype=torch.float16))
+        self.bias = nn.Parameter(torch.zeros(hidden_size, dtype=torch.float16))
+        self.eps = eps
+
+    def forward(self, x):
+        # 統計計算強制使用 FP32 (數值穩定性)
+        x_fp32 = x.float()
+        mean = x_fp32.mean(-1, keepdim=True)
+        variance = x_fp32.var(-1, keepdim=True, unbiased=False)
+
+        # 標準化在 FP32 完成
+        normalized = (x_fp32 - mean) / torch.sqrt(variance + self.eps)
+
+        # 權重應用時轉回 FP16
+        return normalized.to(x.dtype) * self.weight + self.bias
+```
+
+**原因分析**:
+- **數值穩定性**: FP16 在小方差時容易出現 NaN
+- **條件數控制**: FP32 統計減少災難性抵消
+- **性能影響最小**: 統計計算佔總計算量 <1%
+
+##### 2. 損失計算與反向傳播 (必須 FP32)
+
+```python
+# ✅ 損失計算精度策略
+def compute_loss(logits_fp16, labels):
+    # 在 FP32 進行損失計算
+    logits_fp32 = logits_fp16.float()
+    loss = F.cross_entropy(logits_fp32, labels)  # FP32
+
+    # 梯度縮放避免 FP16 下溢
+    scaled_loss = loss * loss_scale  # FP32
+    return scaled_loss
+
+# 梯度更新中的精度處理
+class MixedPrecisionOptimizer:
+    def step(self):
+        for group in self.param_groups:
+            for param in group['params']:
+                if param.grad is not None:
+                    # 梯度在 FP32 更新，權重轉回 FP16
+                    param_fp32 = param.float()
+                    grad_fp32 = param.grad.float() / self.loss_scale
+                    param_fp32.add_(grad_fp32, alpha=-group['lr'])
+                    param.data = param_fp32.half()
+```
+
+**關鍵原因**:
+- **梯度精度**: FP16 梯度易下溢，需要 loss scaling
+- **優化穩定性**: 權重更新在 FP32 進行更穩定
+- **收斂保證**: 大部分優化器假設 FP32 精度
+
+##### 3. 嵌入層 (靈活配置)
+
+```python
+# 策略 A: 全 FP16 (推薦，記憶體友好)
+class EfficientEmbedding(nn.Module):
+    def __init__(self, vocab_size, hidden_size):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, hidden_size, dtype=torch.float16)
+
+    def forward(self, input_ids):
+        return self.embedding(input_ids)  # 直接輸出 FP16
+
+# 策略 B: 嵌入 FP32，投影到 FP16 (準確性優先)
+class PreciseEmbedding(nn.Module):
+    def __init__(self, vocab_size, hidden_size):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, hidden_size, dtype=torch.float32)
+
+    def forward(self, input_ids):
+        embeddings_fp32 = self.embedding(input_ids)
+        return embeddings_fp32.half()  # 轉換到 FP16
+```
+
+**選擇依據**:
+- **詞彙表大小**: >50K 建議 FP32 嵌入
+- **記憶體限制**: 受限時使用 FP16
+- **任務敏感性**: NLP 任務對嵌入精度較敏感
+
+#### 系統性精度管理策略
+
+##### 1. 精度配置模板
+
+```python
+class FlashAttentionConfig:
+    """FlashAttention 精度配置管理"""
+
+    # 必須一致的組件
+    ATTENTION_DTYPE = torch.float16
+
+    # 建議配置
+    ATTENTION_WEIGHTS_DTYPE = torch.float16
+    MLP_WEIGHTS_DTYPE = torch.float16
+
+    # 數值穩定性優先
+    LAYERNORM_COMPUTE_DTYPE = torch.float32
+    LOSS_COMPUTE_DTYPE = torch.float32
+    OPTIMIZER_DTYPE = torch.float32
+
+    # 靈活配置
+    EMBEDDING_DTYPE = torch.float16  # 可調整
+
+def apply_precision_policy(model, config):
+    """自動應用精度策略"""
+    for name, module in model.named_modules():
+        if isinstance(module, AttentionLayer):
+            # 強制 attention 組件精度一致
+            module.to(dtype=config.ATTENTION_DTYPE)
+
+        elif isinstance(module, nn.LayerNorm):
+            # LayerNorm 使用混合精度
+            module.to(dtype=config.ATTENTION_DTYPE)  # 權重 FP16
+            # 統計計算在 forward 中處理
+
+        elif isinstance(module, nn.Embedding):
+            module.to(dtype=config.EMBEDDING_DTYPE)
+```
+
+##### 2. 運行時精度監控
+
+```python
+class PrecisionTracker:
+    """運行時精度不匹配檢測"""
+
+    def __init__(self):
+        self.violations = []
+
+    def track_flash_attention_input(self, q, k, v):
+        """檢查 FlashAttention 輸入精度"""
+        dtypes = [q.dtype, k.dtype, v.dtype]
+
+        if len(set(dtypes)) > 1:
+            self.violations.append({
+                'type': 'flash_attention_mismatch',
+                'dtypes': dtypes,
+                'shapes': [q.shape, k.shape, v.shape]
+            })
+
+        if q.dtype not in [torch.float16, torch.bfloat16]:
+            self.violations.append({
+                'type': 'flash_attention_unsupported',
+                'dtype': q.dtype,
+                'message': 'FlashAttention requires FP16/BF16'
+            })
+
+    def report(self):
+        """生成精度問題報告"""
+        if not self.violations:
+            return "✅ 無精度匹配問題"
+
+        report = "⚠️  精度匹配問題:\n"
+        for issue in self.violations:
+            report += f"- {issue['type']}: {issue}\n"
+        return report
+```
+
+##### 3. 自動精度修復
+
+```python
+def auto_fix_precision_for_flash_attention(q, k, v):
+    """自動修復 FlashAttention 精度問題"""
+
+    # 檢查是否都是支援的類型
+    supported_dtypes = [torch.float16, torch.bfloat16]
+    current_dtypes = [q.dtype, k.dtype, v.dtype]
+
+    # 如果有 FP32，統一降級到 FP16
+    if any(dtype == torch.float32 for dtype in current_dtypes):
+        target_dtype = torch.float16
+        q = q.to(dtype=target_dtype)
+        k = k.to(dtype=target_dtype)
+        v = v.to(dtype=target_dtype)
+        print(f"⚠️  自動轉換精度到 {target_dtype}")
+
+    # 確保三者精度一致
+    elif len(set(current_dtypes)) > 1:
+        # 選擇最高精度的支援格式
+        target_dtype = torch.float16  # 預設選擇
+        q = q.to(dtype=target_dtype)
+        k = k.to(dtype=target_dtype)
+        v = v.to(dtype=target_dtype)
+        print(f"⚠️  統一精度到 {target_dtype}")
+
+    return q, k, v
+
+# 包裝器自動處理精度
+def safe_flash_attention(q, k, v, **kwargs):
+    """精度安全的 FlashAttention 包裝"""
+    original_dtypes = [q.dtype, k.dtype, v.dtype]
+
+    # 自動修復精度問題
+    q, k, v = auto_fix_precision_for_flash_attention(q, k, v)
+
+    # 執行 FlashAttention
+    output = flash_attn_func(q, k, v, **kwargs)
+
+    # 如果原始輸入是 FP32，輸出也轉回 FP32
+    if original_dtypes[0] == torch.float32:
+        output = output.float()
+
+    return output
+```
+
+#### 最佳實踐總結
+
+| 組件 | 推薦精度策略 | 一致性要求 | 原因 |
+|------|-------------|-----------|------|
+| **FlashAttention (Q,K,V)** | FP16/BF16 | 🔴 嚴格一致 | CUDA 內核約束 |
+| **Attention 權重** | FP16 | 🟡 建議一致 | 避免轉換開銷 |
+| **LayerNorm 統計** | FP32 | 🟢 可不一致 | 數值穩定性優先 |
+| **LayerNorm 權重** | FP16 | 🟡 建議一致 | 記憶體效率 |
+| **MLP 權重** | FP16 | 🟡 建議一致 | 性能一致性 |
+| **嵌入層** | FP16/FP32 | 🟢 可不一致 | 任務需求優先 |
+| **損失計算** | FP32 | 🔴 必須獨立 | 數值精度要求 |
+
+**關鍵原則**:
+1. **FlashAttention 路徑必須精度一致** - 技術約束
+2. **數值敏感操作使用高精度** - 穩定性優先
+3. **大部分權重可使用 FP16** - 效率優先
+4. **提供自動修復機制** - 開發體驗
+
+---
+
 ## 🔧 技術原理深度解析
 
 ### 標準 Attention 的記憶體訪問模式

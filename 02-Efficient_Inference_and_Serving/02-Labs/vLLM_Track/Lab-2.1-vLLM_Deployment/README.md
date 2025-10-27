@@ -1,29 +1,38 @@
-# Lab-2.1: vLLM Deployment Practice
+# Lab-2.1: vLLM Deployment Track
 
-## Overview
+## 🎯 實驗目標
+掌握 vLLM 推理引擎的部署與優化，從基礎概念到生產級應用。
 
-This lab teaches you how to deploy and optimize LLM inference using vLLM, the state-of-the-art inference engine.
+## 📚 學習路徑
 
-## Learning Objectives
+### **階段式學習設計**
+```
+📚 環境與概念 → 🚀 實戰與優化 → ⚡ 進階功能
+     (基礎)         (實用)         (精通)
+```
 
-- Master vLLM installation and configuration
-- Understand PagedAttention mechanism
-- Implement efficient batch inference
-- Compare vLLM vs HuggingFace performance
+## 📋 實驗結構
 
-## Lab Structure
+### **01-Setup_and_Installation.ipynb** (重新設計)
+**專注**: 環境設置 + 核心概念理解
+- ✅ 環境驗證與 vLLM 安裝
+- 🧠 PagedAttention 原理深度解析
+- 📊 記憶體效率分析與比較
+- 🔧 基本 API 使用與配置理解
+- 💡 vLLM 與傳統方法的本質差異
 
-### 01-Setup_and_Installation.ipynb
-- Environment verification (CUDA, GPU)
-- vLLM installation
-- Basic inference test
-- PagedAttention visualization
+**⏱️ 時間**: 45-75 分鐘
 
-### 02-Basic_Inference.ipynb
-- vLLM API usage
-- Batch inference
-- Performance comparison
-- Memory analysis
+### **02-Basic_Inference.ipynb** (重新設計)
+**專注**: 生產級應用 + 性能優化
+- 🚀 批次推理與動態調度技術
+- 📊 系統性性能基準測試
+- 💾 GPU 記憶體使用分析與監控
+- ⚡ vLLM vs HuggingFace 詳細對比
+- 🎛️ 進階 Sampling 參數調優
+- 🔧 生產環境配置策略
+
+**⏱️ 時間**: 75-120 分鐘
 
 ### 03-Advanced_Features.ipynb
 - Continuous Batching

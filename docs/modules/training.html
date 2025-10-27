@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核心訓練技術 - iSpan LLM 完整課程</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 0 80px;
+            margin-top: 80px;
+        }
+        .technique-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+        .technique-card:hover {
+            transform: translateY(-5px);
+        }
+        .lab-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .lab-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+        .lab-item {
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .lab-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 1.5rem;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="../index.html#modules" class="nav-link">所有模組</a>
+                <a href="#techniques" class="nav-link">核心技術</a>
+                <a href="#labs" class="nav-link">實驗手冊</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Hero -->
+    <header class="module-hero">
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-dumbbell" style="font-size: 2rem;"></i>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                        Level 1
+                    </div>
+                </div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">核心訓練技術</h1>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">
+                    掌握 PEFT、分散式訓練、模型對齊等核心技術，學會高效訓練大語言模型
+                </p>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">80</div>
+                        <div style="opacity: 0.8;">學習小時</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">8</div>
+                        <div style="opacity: 0.8;">實驗項目</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">20</div>
+                        <div style="opacity: 0.8;">學習天數</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Core Techniques -->
+    <section id="techniques" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">核心訓練技術</h2>
+
+            <div style="display: grid; gap: 2rem;">
+                <div class="technique-card" id="lora">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #667eea; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">LoRA 低秩適應</h3>
+                            <p style="margin: 0; color: #64748b;">參數高效微調的核心技術</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">技術原理</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>低秩矩陣分解理論</li>
+                                <li>參數效率優化</li>
+                                <li>QLoRA 量化結合</li>
+                                <li>AdaLoRA 自適應秩調整</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">實戰應用</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>Llama-2 7B 微調實戰</li>
+                                <li>多任務適配器設計</li>
+                                <li>推理時適配器切換</li>
+                                <li>模型合併與部署</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">PEFT</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Low-Rank</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Memory-Efficient</span>
+                    </div>
+                </div>
+
+                <div class="technique-card" id="deepspeed">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #667eea; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">DeepSpeed 分散式訓練</h3>
+                            <p style="margin: 0; color: #64748b;">突破單機記憶體限制的分散式解決方案</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">ZeRO 技術</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>ZeRO-1: 優化器狀態分片</li>
+                                <li>ZeRO-2: 梯度分片</li>
+                                <li>ZeRO-3: 參數分片</li>
+                                <li>ZeRO-Infinity: CPU 卸載</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">實戰配置</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>多 GPU 訓練配置</li>
+                                <li>記憶體優化策略</li>
+                                <li>梯度累積設置</li>
+                                <li>混合精度訓練</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Distributed</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">ZeRO</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Scalable</span>
+                    </div>
+                </div>
+
+                <div class="technique-card" id="dpo">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #667eea; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">DPO 直接偏好優化</h3>
+                            <p style="margin: 0; color: #64748b;">無需獎勵模型的對齊技術</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">理論基礎</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>Bradley-Terry 模型</li>
+                                <li>偏好學習理論</li>
+                                <li>KL 散度約束</li>
+                                <li>溫度參數調節</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">實施步驟</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>偏好數據收集</li>
+                                <li>配對比較標註</li>
+                                <li>DPO 損失函數實現</li>
+                                <li>對齊效果評估</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Alignment</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Preference</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Direct</span>
+                    </div>
+                </div>
+
+                <div class="technique-card" id="rlhf">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #667eea; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">RLHF 強化學習對齊</h3>
+                            <p style="margin: 0; color: #64748b;">基於人類反饋的強化學習</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">三階段流程</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>監督微調 (SFT) 基線</li>
+                                <li>獎勵模型 (RM) 訓練</li>
+                                <li>PPO 策略優化</li>
+                                <li>迭代改進循環</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">關鍵挑戰</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem;">
+                                <li>獎勵模型過擬合</li>
+                                <li>分佈偏移問題</li>
+                                <li>訓練穩定性</li>
+                                <li>計算資源需求</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">RLHF</span>
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">PPO</span>
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Human-Feedback</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs Timeline -->
+    <section id="labs" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">實驗時間線</h2>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="lab-timeline">
+                    <div class="lab-item">
+                        <h3 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 1.1 - PEFT with HuggingFace</h3>
+                        <p style="color: #64748b; margin-bottom: 1rem;">使用 HuggingFace PEFT 庫實現 LoRA 微調</p>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">6小時</span>
+                            <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">基礎級</span>
+                        </div>
+                        <p style="color: #64748b; font-size: 0.9rem;">
+                            <strong>學習目標：</strong> 掌握 LoRA 的基本實現，理解參數高效微調的優勢
+                        </p>
+                    </div>
+
+                    <div class="lab-item">
+                        <h3 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 1.2 - PyTorch DDP 基礎</h3>
+                        <p style="color: #64748b; margin-bottom: 1rem;">掌握 PyTorch 分散式數據並行訓練</p>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">8小時</span>
+                            <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">中級</span>
+                        </div>
+                        <p style="color: #64748b; font-size: 0.9rem;">
+                            <strong>學習目標：</strong> 理解分散式訓練原理，實現多 GPU 協同訓練
+                        </p>
+                    </div>
+
+                    <div class="lab-item">
+                        <h3 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 1.3 - DeepSpeed 進階訓練</h3>
+                        <p style="color: #64748b; margin-bottom: 1rem;">使用 DeepSpeed ZeRO 技術訓練大模型</p>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">10小時</span>
+                            <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">進階</span>
+                        </div>
+                        <p style="color: #64748b; font-size: 0.9rem;">
+                            <strong>學習目標：</strong> 掌握 ZeRO 技術，突破記憶體限制訓練更大模型
+                        </p>
+                    </div>
+
+                    <div class="lab-item">
+                        <h3 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 1.7 - DPO 對齊訓練</h3>
+                        <p style="color: #64748b; margin-bottom: 1rem;">實現直接偏好優化的對齊訓練</p>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">12小時</span>
+                            <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">進階</span>
+                        </div>
+                        <p style="color: #64748b; font-size: 0.9rem;">
+                            <strong>學習目標：</strong> 理解對齊技術原理，實現模型行為優化
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <a href="fundamentals.html" style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; text-decoration: none; font-weight: 500;">
+                    <i class="fas fa-arrow-left"></i>
+                    上一模組：LLM 基礎理論
+                </a>
+                <a href="inference.html" style="display: flex; align-items: center; gap: 0.5rem; color: #667eea; text-decoration: none; font-weight: 500;">
+                    下一模組：高效推理與服務
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

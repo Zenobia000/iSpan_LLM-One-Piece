@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型壓縮 - iSpan LLM 完整課程</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+            color: white;
+            padding: 120px 0 80px;
+            margin-top: 80px;
+        }
+        .compression-technique {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 4px solid #9c27b0;
+        }
+        .technique-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .technique-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .technique-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+        }
+        .technique-card:hover {
+            transform: translateY(-5px);
+        }
+        .performance-chart {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="../index.html#modules" class="nav-link">所有模組</a>
+                <a href="#techniques" class="nav-link">壓縮技術</a>
+                <a href="#comparison" class="nav-link">技術對比</a>
+                <a href="#labs" class="nav-link">實驗手冊</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Hero -->
+    <header class="module-hero">
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-compress-alt" style="font-size: 2rem;"></i>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                        Level 3
+                    </div>
+                </div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">模型壓縮</h1>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">
+                    掌握量化、剪枝、蒸餾等壓縮技術，實現模型的輕量化部署
+                </p>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">48</div>
+                        <div style="opacity: 0.8;">學習小時</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">6</div>
+                        <div style="opacity: 0.8;">實驗項目</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">3</div>
+                        <div style="opacity: 0.8;">核心技術</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Compression Overview -->
+    <section style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">壓縮技術概覽</h2>
+
+            <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 3rem;">
+                <h3 style="color: #2d3748; margin-bottom: 1.5rem; text-align: center;">為什麼需要模型壓縮？</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #fef2f2; color: #dc2626; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-memory"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">記憶體限制</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">7B 模型需要 28GB 記憶體<br>邊緣設備無法負擔</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #fff7ed; color: #ea580c; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">推理速度</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">大模型推理延遲高<br>影響用戶體驗</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #f0fdf4; color: #16a34a; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">部署成本</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">GPU 資源昂貴<br>需要降低部署成本</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #f3e8ff; color: #7c3aed; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">邊緣部署</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">手機、IoT 設備<br>資源極度受限</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="performance-chart">
+                <h3 style="color: #2d3748; margin-bottom: 1rem; text-align: center;">壓縮效果對比 (Llama-2-7B 基準)</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: white; border-radius: 8px;">
+                        <div style="font-weight: bold; color: #2d3748;">原始模型</div>
+                        <div style="color: #dc2626; font-size: 1.2rem; margin: 0.5rem 0;">28GB</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">FP32 精度</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: white; border-radius: 8px;">
+                        <div style="font-weight: bold; color: #2d3748;">INT8 量化</div>
+                        <div style="color: #ea580c; font-size: 1.2rem; margin: 0.5rem 0;">7GB</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">4x 壓縮，99% 精度</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: white; border-radius: 8px;">
+                        <div style="font-weight: bold; color: #2d3748;">INT4 量化</div>
+                        <div style="color: #16a34a; font-size: 1.2rem; margin: 0.5rem 0;">3.5GB</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">8x 壓縮，95% 精度</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: white; border-radius: 8px;">
+                        <div style="font-weight: bold; color: #2d3748;">知識蒸餾</div>
+                        <div style="color: #7c3aed; font-size: 1.2rem; margin: 0.5rem 0;">3.5GB</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">小模型，90% 能力</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Techniques -->
+    <section id="techniques" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">核心壓縮技術</h2>
+
+            <div class="compression-technique" id="quantization">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #9c27b0; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: #2d3748;">模型量化 (Quantization)</h3>
+                        <p style="margin: 0; color: #64748b;">降低數值精度以減少記憶體佔用</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">量化類型</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li><strong>後訓練量化 (PTQ)</strong>：GPTQ、AWQ、GGML</li>
+                            <li><strong>量化感知訓練 (QAT)</strong>：訓練時模擬量化</li>
+                            <li><strong>動態量化</strong>：運行時量化</li>
+                            <li><strong>混合精度</strong>：關鍵層保持高精度</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">精度級別</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li><strong>FP16</strong>：半精度浮點，2x 壓縮</li>
+                            <li><strong>INT8</strong>：8位整數，4x 壓縮</li>
+                            <li><strong>INT4</strong>：4位整數，8x 壓縮</li>
+                            <li><strong>Binary</strong>：二值化，32x 壓縮</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #2d3748;">核心演算法：</strong>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">GPTQ</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">AWQ</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">GGML</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">BitsAndBytes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="compression-technique" id="pruning">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #9c27b0; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: #2d3748;">模型剪枝 (Pruning)</h3>
+                        <p style="margin: 0; color: #64748b;">移除不重要的參數和連接</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">剪枝策略</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li><strong>非結構化剪枝</strong>：移除個別權重</li>
+                            <li><strong>結構化剪枝</strong>：移除整個通道/層</li>
+                            <li><strong>漸進式剪枝</strong>：逐步增加稀疏度</li>
+                            <li><strong>自動剪枝</strong>：演算法自動決定</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">重要性評估</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li><strong>幅度剪枝</strong>：基於權重大小</li>
+                            <li><strong>梯度剪枝</strong>：基於梯度資訊</li>
+                            <li><strong>Fisher 資訊</strong>：基於二階導數</li>
+                            <li><strong>WANDA</strong>：權重與激活感知</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #2d3748;">前沿方法：</strong>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">WANDA</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">SparseGPT</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Lottery Ticket</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Magnitude</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="compression-technique" id="distillation">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #9c27b0; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: #2d3748;">知識蒸餾 (Knowledge Distillation)</h3>
+                        <p style="margin: 0; color: #64748b;">將大模型知識轉移到小模型</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">蒸餾類型</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li><strong>回應蒸餾</strong>：學習輸出分佈</li>
+                            <li><strong>特徵蒸餾</strong>：學習中間表示</li>
+                            <li><strong>注意力蒸餾</strong>：學習注意力模式</li>
+                            <li><strong>關係蒸餾</strong>：學習樣本間關係</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">蒸餾策略</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li><strong>離線蒸餾</strong>：預先訓練教師模型</li>
+                            <li><strong>線上蒸餾</strong>：同時訓練師生模型</li>
+                            <li><strong>自蒸餾</strong>：模型自己當教師</li>
+                            <li><strong>多教師蒸餾</strong>：多個教師模型</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #2d3748;">成功案例：</strong>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">DistilBERT</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">TinyBERT</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">MobileBERT</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Alpaca</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technique Comparison -->
+    <section id="comparison" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">技術對比分析</h2>
+
+            <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="color: #2d3748; margin-bottom: 1.5rem; text-align: center;">壓縮技術選擇決策樹</h3>
+                <div style="background: #f8fafc; border-radius: 8px; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; color: #2d3748;">
+                    記憶體極度受限 → INT4量化 或 知識蒸餾<br>
+                    推理速度優先 → 結構化剪枝 + INT8量化<br>
+                    精度要求高 → GPTQ/AWQ量化 或 漸進剪枝<br>
+                    邊緣設備部署 → 蒸餾小模型 + 量化<br>
+                    雲端服務 → 輕度剪枝 + FP16
+                </div>
+            </div>
+
+            <div class="technique-comparison">
+                <div class="technique-card">
+                    <h3 style="color: #2d3748; margin-bottom: 1rem;">量化技術</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #16a34a; margin-bottom: 0.5rem;">✅ 優勢</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                            <li>實現簡單，工具成熟</li>
+                            <li>壓縮比高，效果顯著</li>
+                            <li>硬體支援好</li>
+                            <li>保持模型結構不變</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #dc2626; margin-bottom: 0.5rem;">❌ 劣勢</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                            <li>精度損失不可避免</li>
+                            <li>極端量化效果差</li>
+                            <li>需要校準數據</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <strong>適用場景：</strong>快速部署、硬體受限環境
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <h3 style="color: #2d3748; margin-bottom: 1rem;">剪枝技術</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #16a34a; margin-bottom: 0.5rem;">✅ 優勢</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                            <li>可控制壓縮程度</li>
+                            <li>理論基礎扎實</li>
+                            <li>可與其他技術結合</li>
+                            <li>推理加速明顯</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #dc2626; margin-bottom: 0.5rem;">❌ 劣勢</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                            <li>需要重新訓練</li>
+                            <li>硬體支援有限</li>
+                            <li>結構化剪枝限制多</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <strong>適用場景：</strong>有重訓練資源、追求極致性能
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <h3 style="color: #2d3748; margin-bottom: 1rem;">知識蒸餾</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #16a34a; margin-bottom: 0.5rem;">✅ 優勢</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                            <li>壓縮比最高</li>
+                            <li>靈活設計學生模型</li>
+                            <li>能力保持相對好</li>
+                            <li>部署資源最少</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #dc2626; margin-bottom: 0.5rem;">❌ 劣勢</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                            <li>訓練成本最高</li>
+                            <li>效果不穩定</li>
+                            <li>需要大量數據</li>
+                            <li>能力上限受限</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <strong>適用場景：</strong>邊緣設備、極度資源受限
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs -->
+    <section id="labs" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">實驗手冊</h2>
+
+            <div style="display: grid; gap: 2rem;">
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin-bottom: 2rem;">模型壓縮實驗流程</h3>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">Lab 3.1 - GPTQ 量化實戰</h4>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                使用 AutoGPTQ 實現 4-bit 量化，壓縮 Llama-2-7B 模型
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">6小時</span>
+                                <span style="background: #f0fdf4; color: #16a34a; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">中級</span>
+                            </div>
+                            <ul style="color: #64748b; font-size: 0.9rem; padding-left: 1.5rem;">
+                                <li>理解 GPTQ 演算法原理</li>
+                                <li>實現模型量化流程</li>
+                                <li>評估量化前後效果</li>
+                                <li>部署量化模型推理</li>
+                            </ul>
+                        </div>
+
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">Lab 3.2 - WANDA 剪枝技術</h4>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                實現 WANDA 非結構化剪枝，達到 50% 稀疏度
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">8小時</span>
+                                <span style="background: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">進階</span>
+                            </div>
+                            <ul style="color: #64748b; font-size: 0.9rem; padding-left: 1.5rem;">
+                                <li>理解 WANDA 剪枝原理</li>
+                                <li>實現權重重要性評估</li>
+                                <li>執行漸進式剪枝</li>
+                                <li>驗證剪枝效果</li>
+                            </ul>
+                        </div>
+
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">Lab 3.3 - 知識蒸餾實踐</h4>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                從 7B 教師模型蒸餾出 1B 學生模型
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">10小時</span>
+                                <span style="background: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">進階</span>
+                            </div>
+                            <ul style="color: #64748b; font-size: 0.9rem; padding-left: 1.5rem;">
+                                <li>設計學生模型架構</li>
+                                <li>實現蒸餾損失函數</li>
+                                <li>執行蒸餾訓練流程</li>
+                                <li>評估蒸餾效果</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <a href="inference.html" style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; text-decoration: none; font-weight: 500;">
+                    <i class="fas fa-arrow-left"></i>
+                    上一模組：高效推理與服務
+                </a>
+                <a href="evaluation.html" style="display: flex; align-items: center; gap: 0.5rem; color: #9c27b0; text-decoration: none; font-weight: 500;">
+                    下一模組：評估與數據工程
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常見問題 FAQ - iSpan LLM 完整課程</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .faq-hero {
+            background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+            color: white;
+            padding: 120px 0 80px;
+            margin-top: 80px;
+        }
+        .faq-category {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1.5rem 0;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        .faq-question h4 {
+            color: #2d3748;
+            margin: 0;
+            flex: 1;
+        }
+        .faq-answer {
+            display: none;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .faq-answer.active {
+            display: block;
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-icon.rotated {
+            transform: rotate(180deg);
+        }
+        .search-faq {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="#environment" class="nav-link">環境問題</a>
+                <a href="#training" class="nav-link">訓練問題</a>
+                <a href="#inference" class="nav-link">推理問題</a>
+                <a href="#general" class="nav-link">一般問題</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FAQ Hero -->
+    <header class="faq-hero">
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-question-circle" style="font-size: 2rem;"></i>
+                </div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">常見問題 FAQ</h1>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">
+                    解答學習過程中的常見問題，讓您的 LLM 工程學習之旅更加順暢
+                </p>
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; display: inline-block;">
+                    <i class="fas fa-lightbulb" style="margin-right: 0.5rem;"></i>
+                    找不到問題答案？歡迎在 GitHub Issues 提出！
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search FAQ -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div class="search-faq">
+                <h3 style="color: #2d3748; margin-bottom: 1rem; text-align: center;">搜尋常見問題</h3>
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div style="display: flex; position: relative;">
+                        <input type="text" id="faq-search" placeholder="輸入關鍵字搜尋問題..." style="flex: 1; padding: 15px 20px; border: 2px solid #e2e8f0; border-radius: 12px 0 0 12px; font-size: 1rem; outline: none;">
+                        <button style="background: #4caf50; color: white; border: none; padding: 15px 20px; border-radius: 0 12px 12px 0; cursor: pointer;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Environment FAQ -->
+    <section id="environment" style="padding: 3rem 0;">
+        <div class="container">
+            <div class="faq-category">
+                <h2 style="color: #2d3748; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-cog" style="color: #4caf50;"></i>
+                    環境設置問題
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>Poetry install 安裝失敗怎麼辦？</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>常見原因：</strong></p>
+                        <ul>
+                            <li>網路連線問題或 PyPI 鏡像緩慢</li>
+                            <li>Python 版本不相容（需要 3.9-3.11）</li>
+                            <li>Poetry 快取損壞</li>
+                        </ul>
+                        <p><strong>解決方案：</strong></p>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # 清除 Poetry 快取<br>
+                            poetry cache clear pypi --all<br><br>
+                            # 使用國內鏡像（中國大陸用戶）<br>
+                            poetry config repositories.aliyun https://mirrors.aliyun.com/pypi/simple/<br>
+                            poetry config repositories.tsinghua https://pypi.tuna.tsinghua.edu.cn/simple/<br><br>
+                            # 重新安裝<br>
+                            poetry install --no-root --all-extras
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>CUDA 版本不匹配的問題</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>問題描述：</strong>安裝的 PyTorch CUDA 版本與系統 CUDA 不匹配</p>
+                        <p><strong>檢查步驟：</strong></p>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # 檢查系統 CUDA 版本<br>
+                            nvcc --version<br><br>
+                            # 檢查 PyTorch CUDA 版本<br>
+                            python -c "import torch; print(torch.version.cuda)"
+                        </div>
+                        <p><strong>解決方案：</strong>安裝對應的 PyTorch 版本</p>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # CUDA 11.8<br>
+                            pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118<br><br>
+                            # CUDA 12.1<br>
+                            pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>Flash Attention 安裝失敗</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>問題原因：</strong>Flash Attention 需要從源碼編譯，對環境要求較高</p>
+                        <p><strong>解決方案：</strong></p>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # 確保有足夠的編譯資源<br>
+                            MAX_JOBS=4 pip install flash-attn --no-build-isolation --no-cache-dir<br><br>
+                            # 如果仍然失敗，可以跳過 Flash Attention<br>
+                            # 大部分實驗不依賴此套件
+                        </div>
+                        <p><strong>替代方案：</strong>如果無法安裝，可以跳過 Flash Attention，使用標準的注意力機制。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training FAQ -->
+    <section id="training" style="padding: 3rem 0; background: #f8fafc;">
+        <div class="container">
+            <div class="faq-category">
+                <h2 style="color: #2d3748; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-dumbbell" style="color: #4caf50;"></i>
+                    模型訓練問題
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>訓練時出現 CUDA out of memory 錯誤</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>常見解決方案（按效果排序）：</strong></p>
+                        <ol>
+                            <li><strong>減少 batch_size</strong>：從 8 降到 4、2 或 1</li>
+                            <li><strong>啟用梯度累積</strong>：gradient_accumulation_steps = 4</li>
+                            <li><strong>使用梯度檢查點</strong>：gradient_checkpointing = True</li>
+                            <li><strong>使用量化訓練</strong>：QLoRA (4-bit) 可節省 75% 記憶體</li>
+                            <li><strong>使用 DeepSpeed ZeRO</strong>：多 GPU 記憶體優化</li>
+                        </ol>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # 記憶體優化配置範例<br>
+                            training_args = TrainingArguments(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;per_device_train_batch_size=1,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;gradient_accumulation_steps=8,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;gradient_checkpointing=True,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;dataloader_pin_memory=False,<br>
+                            )
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>LoRA 訓練效果不佳怎麼辦？</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>調整建議：</strong></p>
+                        <ul>
+                            <li><strong>增加 LoRA rank</strong>：從 8 增加到 16 或 32</li>
+                            <li><strong>調整 alpha 參數</strong>：通常設為 rank 的 2 倍</li>
+                            <li><strong>增加目標模組</strong>：除了 q_proj, v_proj 外加入 o_proj, gate_proj</li>
+                            <li><strong>調整學習率</strong>：LoRA 通常需要較高的學習率（1e-4 到 5e-4）</li>
+                        </ul>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # 推薦的 LoRA 配置<br>
+                            peft_config = LoraConfig(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;r=16,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lora_alpha=32,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;target_modules=["q_proj", "v_proj", "o_proj", "gate_proj"],<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lora_dropout=0.1,<br>
+                            )
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>訓練損失不下降或發散</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>可能原因與解決方案：</strong></p>
+                        <ul>
+                            <li><strong>學習率過高</strong>：降低學習率，從 5e-4 降到 1e-4 或更低</li>
+                            <li><strong>數據質量問題</strong>：檢查數據格式、標籤正確性</li>
+                            <li><strong>梯度爆炸</strong>：啟用梯度裁剪 max_grad_norm=1.0</li>
+                            <li><strong>批次大小過小</strong>：增加 gradient_accumulation_steps</li>
+                        </ul>
+                        <p><strong>debugging 技巧：</strong></p>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # 監控訓練指標<br>
+                            tensorboard --logdir ./logs<br><br>
+                            # 檢查梯度範數<br>
+                            logging_steps=10<br>
+                            report_to="tensorboard"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inference FAQ -->
+    <section id="inference" style="padding: 3rem 0;">
+        <div class="container">
+            <div class="faq-category">
+                <h2 style="color: #2d3748; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-rocket" style="color: #4caf50;"></i>
+                    推理部署問題
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>vLLM 啟動失敗或推理緩慢</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>常見問題與解決方案：</strong></p>
+                        <ul>
+                            <li><strong>記憶體不足</strong>：調整 --max-model-len 參數</li>
+                            <li><strong>GPU 利用率低</strong>：增加 --max-num-seqs 參數</li>
+                            <li><strong>版本衝突</strong>：確保 CUDA、PyTorch、vLLM 版本匹配</li>
+                        </ul>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # vLLM 推薦啟動參數<br>
+                            python -m vllm.entrypoints.openai.api_server \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--model /path/to/model \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--max-model-len 2048 \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--max-num-seqs 256 \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--tensor-parallel-size 1
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>模型量化後精度下降嚴重</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>改善策略：</strong></p>
+                        <ul>
+                            <li><strong>使用更好的量化方法</strong>：GPTQ > AWQ > GGML</li>
+                            <li><strong>提供校準數據</strong>：使用與目標任務相關的數據</li>
+                            <li><strong>混合精度</strong>：保持關鍵層為高精度</li>
+                            <li><strong>量化感知微調</strong>：量化後進行少量 epoch 的微調</li>
+                        </ul>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # GPTQ 量化範例<br>
+                            from auto_gptq import AutoGPTQForCausalLM<br><br>
+                            model = AutoGPTQForCausalLM.from_pretrained(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;model_name,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;quantize_config=quantize_config,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;calibration_dataset=calibration_data<br>
+                            )
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>API 服務響應慢或超時</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>性能優化建議：</strong></p>
+                        <ul>
+                            <li><strong>調整並發設置</strong>：增加 worker 數量和連接池大小</li>
+                            <li><strong>啟用批處理</strong>：dynamic batching 提高吞吐量</li>
+                            <li><strong>使用異步處理</strong>：FastAPI 的異步特性</li>
+                            <li><strong>添加快取機制</strong>：對常見請求進行快取</li>
+                        </ul>
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                            # FastAPI 性能配置<br>
+                            uvicorn main:app \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--host 0.0.0.0 \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--port 8000 \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--workers 4 \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;--worker-class uvicorn.workers.UvicornWorker
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- General FAQ -->
+    <section id="general" style="padding: 3rem 0; background: #f8fafc;">
+        <div class="container">
+            <div class="faq-category">
+                <h2 style="color: #2d3748; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-question" style="color: #4caf50;"></i>
+                    一般學習問題
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>我是新手，應該從哪個模組開始學習？</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>建議學習順序：</strong></p>
+                        <ol>
+                            <li><strong>LLM 基礎理論</strong>：建立基本認知，了解 Transformer 架構</li>
+                            <li><strong>核心訓練技術</strong>：學習 LoRA 等 PEFT 技術</li>
+                            <li><strong>高效推理與服務</strong>：掌握 vLLM 基礎部署</li>
+                            <li><strong>模型壓縮</strong>：學習量化技術</li>
+                            <li><strong>評估與數據工程</strong>：學習模型評估方法</li>
+                        </ol>
+                        <p><strong>時間分配建議：</strong>每個模組 1-2 週，總共 2-3 個月完成基礎學習。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>沒有 GPU 可以學習這門課程嗎？</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>可以，但建議：</strong></p>
+                        <ul>
+                            <li><strong>理論學習</strong>：所有理論內容都可以在 CPU 環境學習</li>
+                            <li><strong>小規模實驗</strong>：使用小模型（如 GPT-2）進行概念驗證</li>
+                            <li><strong>雲端資源</strong>：使用 Google Colab Pro、AWS、Azure 等雲端 GPU</li>
+                            <li><strong>模擬學習</strong>：理解原理和代碼實現，無需實際運行大模型</li>
+                        </ul>
+                        <p><strong>雲端選項：</strong></p>
+                        <ul>
+                            <li>Google Colab Pro: $10/月，T4 GPU</li>
+                            <li>AWS EC2 g4dn.xlarge: $0.526/小時</li>
+                            <li>Paperspace: $8/月起</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>課程內容多久更新一次？</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>更新頻率：</strong></p>
+                        <ul>
+                            <li><strong>核心內容</strong>：每季度檢視，必要時更新</li>
+                            <li><strong>工具版本</strong>：跟隨主要套件更新（PyTorch、Transformers）</li>
+                            <li><strong>前沿技術</strong>：持續添加最新研究成果</li>
+                            <li><strong>Bug 修復</strong>：隨時修復發現的問題</li>
+                        </ul>
+                        <p><strong>獲取更新：</strong>關注 GitHub repository 的 releases 和 commits。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>完成課程後能達到什麼水平？</h4>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>基礎軌道完成後：</strong></p>
+                        <ul>
+                            <li>理解 LLM 的核心原理和技術架構</li>
+                            <li>能夠使用 PEFT 技術微調模型</li>
+                            <li>掌握基礎的模型部署和推理優化</li>
+                            <li>具備初級 LLM 工程師的技術能力</li>
+                        </ul>
+                        <p><strong>進階軌道完成後：</strong></p>
+                        <ul>
+                            <li>深入理解各種訓練和優化技術</li>
+                            <li>能夠設計和實現生產級推理服務</li>
+                            <li>具備模型評估和數據工程能力</li>
+                            <li>達到中級至高級 LLM 工程師水平</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Support -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div style="background: white; border-radius: 12px; padding: 3rem; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                <h2 style="color: #2d3748; margin-bottom: 1rem;">還有其他問題？</h2>
+                <p style="color: #64748b; margin-bottom: 2rem; font-size: 1.1rem;">
+                    我們樂意協助您解決學習過程中遇到的任何問題
+                </p>
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <a href="https://github.com/ispan-llm/iSpan_LLM-One-Piece/issues" style="background: #4caf50; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fab fa-github"></i>
+                        GitHub Issues
+                    </a>
+                    <a href="mailto:support@ispan-llm.com" style="background: transparent; color: #4caf50; border: 2px solid #4caf50; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-envelope"></i>
+                        Email 支援
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section style="padding: 2rem 0;">
+        <div class="container">
+            <div style="text-align: center;">
+                <a href="../index.html" style="color: #4caf50; text-decoration: none; font-weight: 500; font-size: 1.1rem;">
+                    <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                    返回課程首頁
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.faq-icon');
+
+            answer.classList.toggle('active');
+            icon.classList.toggle('rotated');
+        }
+
+        // FAQ Search functionality
+        document.getElementById('faq-search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('h4').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = searchTerm === '' ? 'block' : 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>評估與數據工程 - iSpan LLM 完整課程</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%);
+            color: white;
+            padding: 120px 0 80px;
+            margin-top: 80px;
+        }
+        .evaluation-dimension {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 4px solid #2196f3;
+        }
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .benchmark-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .benchmark-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #2196f3, #21cbf3);
+        }
+        .benchmark-card:hover {
+            transform: translateY(-5px);
+        }
+        .data-pipeline {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .pipeline-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="../index.html#modules" class="nav-link">所有模組</a>
+                <a href="#evaluation" class="nav-link">評估體系</a>
+                <a href="#benchmarks" class="nav-link">評估基準</a>
+                <a href="#data-engineering" class="nav-link">數據工程</a>
+                <a href="#labs" class="nav-link">實驗手冊</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Hero -->
+    <header class="module-hero">
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-chart-bar" style="font-size: 2rem;"></i>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                        Level 4
+                    </div>
+                </div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">評估與數據工程</h1>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">
+                    學習 OpenCompass 評估框架，掌握數據工程和模型品質評估方法
+                </p>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">40</div>
+                        <div style="opacity: 0.8;">學習小時</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">5</div>
+                        <div style="opacity: 0.8;">實驗項目</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">12</div>
+                        <div style="opacity: 0.8;">學習天數</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Evaluation Framework -->
+    <section id="evaluation" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">多維評估體系</h2>
+
+            <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 3rem;">
+                <h3 style="color: #2d3748; margin-bottom: 1.5rem; text-align: center;">為什麼需要科學的評估體系？</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #e3f2fd; color: #1976d2; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">指導改進</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">找出模型弱點<br>指導訓練方向</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #e8f5e8; color: #2e7d32; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">公平比較</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">統一評估標準<br>客觀性能比較</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #fff3e0; color: #f57c00; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">風險控制</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">發現安全問題<br>確保可靠部署</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #f3e5f5; color: #7b1fa2; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">追蹤進展</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">量化改進效果<br>證明技術價值</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="evaluation-dimension" id="opencompass">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #2196f3; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: #2d3748;">OpenCompass 評估平台</h3>
+                        <p style="margin: 0; color: #64748b;">開源全面評估框架，支援 50+ 數據集</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">核心特色</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>統一評估接口，支援多種模型</li>
+                            <li>豐富的評估數據集和指標</li>
+                            <li>分散式評估，提高效率</li>
+                            <li>詳細的評估報告和分析</li>
+                            <li>支援自定義評估任務</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">評估流程</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>模型配置和環境準備</li>
+                            <li>數據集下載和預處理</li>
+                            <li>批量推理和結果收集</li>
+                            <li>指標計算和統計分析</li>
+                            <li>報告生成和結果可視化</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #2d3748;">支援數據集：</strong>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">MMLU</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">C-Eval</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">GSM8K</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">HumanEval</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">HellaSwag</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benchmarks -->
+    <section id="benchmarks" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">主流評估基準</h2>
+
+            <div class="benchmark-grid">
+                <div class="benchmark-card" id="mmlu">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">MMLU</h3>
+                            <p style="margin: 0; color: #64748b; font-size: 0.9rem;">大規模多任務語言理解</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: #64748b; margin-bottom: 1rem;">
+                            涵蓋 57 個學科的多選題測試，評估模型的知識廣度和推理能力
+                        </p>
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #2d3748;">包含領域：</strong>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0.5rem 0;">
+                                <li>人文學科：歷史、哲學、藝術</li>
+                                <li>社會科學：法律、政治、經濟</li>
+                                <li>自然科學：物理、化學、生物</li>
+                                <li>應用科學：工程、醫學、商業</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">題目數量</span>
+                            <span style="color: #64748b;">15,908 題</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">評估指標</span>
+                            <span style="color: #64748b;">準確率</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #2d3748; font-weight: 500;">人類表現</span>
+                            <span style="color: #64748b;">89.8%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benchmark-card" id="gsm8k">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">GSM8K</h3>
+                            <p style="margin: 0; color: #64748b; font-size: 0.9rem;">小學數學文字題</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: #64748b; margin-bottom: 1rem;">
+                            8,500 道小學數學文字題，評估模型的數學推理和問題解決能力
+                        </p>
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #2d3748;">能力評估：</strong>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0.5rem 0;">
+                                <li>基礎算術運算</li>
+                                <li>多步驟推理</li>
+                                <li>文字理解能力</li>
+                                <li>邏輯思維能力</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">題目數量</span>
+                            <span style="color: #64748b;">8,500 題</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">評估指標</span>
+                            <span style="color: #64748b;">精確匹配</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #2d3748; font-weight: 500;">難度等級</span>
+                            <span style="color: #64748b;">小學程度</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benchmark-card" id="humaneval">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">HumanEval</h3>
+                            <p style="margin: 0; color: #64748b; font-size: 0.9rem;">程式碼生成評估</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: #64748b; margin-bottom: 1rem;">
+                            164 個手工編寫的程式設計問題，評估模型的程式碼生成和理解能力
+                        </p>
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #2d3748;">評估維度：</strong>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0.5rem 0;">
+                                <li>語法正確性</li>
+                                <li>邏輯完整性</li>
+                                <li>功能實現度</li>
+                                <li>測試案例通過率</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">題目數量</span>
+                            <span style="color: #64748b;">164 題</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">評估指標</span>
+                            <span style="color: #64748b;">Pass@K</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #2d3748; font-weight: 500;">程式語言</span>
+                            <span style="color: #64748b;">Python</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benchmark-card" id="ceval">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">C-Eval</h3>
+                            <p style="margin: 0; color: #64748b; font-size: 0.9rem;">中文綜合評估</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: #64748b; margin-bottom: 1rem;">
+                            涵蓋 52 個學科的中文評估基準，專門評估中文語言模型的能力
+                        </p>
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #2d3748;">特色：</strong>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0.5rem 0;">
+                                <li>覆蓋中國教育體系</li>
+                                <li>包含專業術語和概念</li>
+                                <li>測試中文理解深度</li>
+                                <li>文化背景知識評估</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">題目數量</span>
+                            <span style="color: #64748b;">13,948 題</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">評估語言</span>
+                            <span style="color: #64748b;">繁體/簡體中文</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #2d3748; font-weight: 500;">學科數量</span>
+                            <span style="color: #64748b;">52 個</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Engineering -->
+    <section id="data-engineering" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">數據工程實踐</h2>
+
+            <div class="data-pipeline">
+                <h3 style="color: #2d3748; margin-bottom: 2rem; text-align: center;">數據處理流水線</h3>
+
+                <div class="pipeline-step">
+                    <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">數據收集與整合</h4>
+                        <p style="color: #64748b; margin: 0;">從多種來源收集原始數據，包括網頁爬取、API 獲取、公開數據集等</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Web Scraping</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">API</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Datasets</span>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">數據清洗與預處理</h4>
+                        <p style="color: #64748b; margin: 0;">移除噪聲、標準化格式、處理編碼問題、過濾低質量內容</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Denoising</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Encoding</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Filtering</span>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">3</div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">去重與相似性檢測</h4>
+                        <p style="color: #64748b; margin: 0;">使用 MinHash、SimHash 等算法檢測和移除重複或高度相似的內容</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">MinHash</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">SimHash</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Embedding</span>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">4</div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">質量評估與篩選</h4>
+                        <p style="color: #64748b; margin: 0;">使用困惑度、分類器評分等方法評估數據質量，篩選高質量數據</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Perplexity</span>
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Classifier</span>
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Statistics</span>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div style="background: #2196f3; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">5</div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">數據標註與驗證</h4>
+                        <p style="color: #64748b; margin: 0;">進行人工標註或自動標註，確保標註質量和一致性</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Manual</span>
+                        <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Crowdsourcing</span>
+                        <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Validation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem;">
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-chart-pie" style="color: #2196f3;"></i>
+                        數據品質指標
+                    </h3>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">準確性</span>
+                            <span style="color: #64748b;">資訊正確無誤</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">完整性</span>
+                            <span style="color: #64748b;">資訊充分全面</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">一致性</span>
+                            <span style="color: #64748b;">無矛盾衝突</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">時效性</span>
+                            <span style="color: #64748b;">資訊更新及時</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #2d3748; font-weight: 500;">相關性</span>
+                            <span style="color: #64748b;">與任務相關</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #2d3748; font-weight: 500;">多樣性</span>
+                            <span style="color: #64748b;">涵蓋範圍廣</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-tools" style="color: #2196f3;"></i>
+                        數據工程工具
+                    </h3>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 1rem;">處理框架</h4>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Pandas</span>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Dask</span>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Spark</span>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 1rem;">文本處理</h4>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                            <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">NLTK</span>
+                            <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">spaCy</span>
+                            <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">jieba</span>
+                        </div>
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 1rem;">質量評估</h4>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Cleanlab</span>
+                            <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">DataProfiler</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs -->
+    <section id="labs" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">實驗手冊</h2>
+
+            <div style="display: grid; gap: 2rem;">
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin-bottom: 2rem;">評估與數據工程實驗</h3>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">Lab 4.1 - OpenCompass 評估實踐</h4>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                使用 OpenCompass 框架對多個模型進行綜合評估
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">8小時</span>
+                                <span style="background: #f0fdf4; color: #16a34a; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">中級</span>
+                            </div>
+                            <ul style="color: #64748b; font-size: 0.9rem; padding-left: 1.5rem;">
+                                <li>安裝配置 OpenCompass 環境</li>
+                                <li>執行 MMLU、GSM8K 等基準測試</li>
+                                <li>分析評估結果和性能報告</li>
+                                <li>自定義評估任務和指標</li>
+                            </ul>
+                        </div>
+
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">Lab 4.2 - 數據品質評估與過濾</h4>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                實踐數據清洗、去重和品質評估的完整流程
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">6小時</span>
+                                <span style="background: #f0fdf4; color: #16a34a; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">基礎</span>
+                            </div>
+                            <ul style="color: #64748b; font-size: 0.9rem; padding-left: 1.5rem;">
+                                <li>數據清洗和格式標準化</li>
+                                <li>實現 MinHash 去重算法</li>
+                                <li>使用困惑度評估文本品質</li>
+                                <li>建立數據品質評估指標</li>
+                            </ul>
+                        </div>
+
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                            <h4 style="color: #2d3748; margin-bottom: 1rem;">Lab 4.3 - 自定義評估基準設計</h4>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                設計領域特定的評估基準和評估流程
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">10小時</span>
+                                <span style="background: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">進階</span>
+                            </div>
+                            <ul style="color: #64748b; font-size: 0.9rem; padding-left: 1.5rem;">
+                                <li>分析特定領域的評估需求</li>
+                                <li>設計評估任務和數據集</li>
+                                <li>實現自動評估指標</li>
+                                <li>驗證評估基準的有效性</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <a href="compression.html" style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; text-decoration: none; font-weight: 500;">
+                    <i class="fas fa-arrow-left"></i>
+                    上一模組：模型壓縮
+                </a>
+                <a href="../index.html" style="display: flex; align-items: center; gap: 0.5rem; color: #2196f3; text-decoration: none; font-weight: 500;">
+                    回到課程首頁
+                    <i class="fas fa-home"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

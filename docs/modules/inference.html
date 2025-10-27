@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高效推理與服務 - iSpan LLM 完整課程</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+            color: white;
+            padding: 120px 0 80px;
+            margin-top: 80px;
+        }
+        .track-selector {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .track-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .track-option:hover, .track-option.active {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+        }
+        .tech-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .tech-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="../index.html#modules" class="nav-link">所有模組</a>
+                <a href="#tracks" class="nav-link">學習軌道</a>
+                <a href="#technologies" class="nav-link">核心技術</a>
+                <a href="#labs" class="nav-link">實驗手冊</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Hero -->
+    <header class="module-hero">
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-rocket" style="font-size: 2rem;"></i>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                        Level 2
+                    </div>
+                </div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">高效推理與服務</h1>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">
+                    學習 vLLM、TensorRT-LLM、Triton 等推理引擎，掌握大模型的生產部署技術
+                </p>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">60</div>
+                        <div style="opacity: 0.8;">學習小時</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">10</div>
+                        <div style="opacity: 0.8;">實驗項目</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">2</div>
+                        <div style="opacity: 0.8;">學習軌道</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Learning Tracks -->
+    <section id="tracks" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">雙軌道學習路徑</h2>
+
+            <div class="track-selector">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: #2d3748;">選擇適合您的學習軌道</h3>
+
+                <div class="track-option" id="vllm-track" onclick="selectTrack('vllm')">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #ff6b6b; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">🎯 vLLM Track (基礎軌道)</h3>
+                            <p style="margin: 0; color: #64748b;">適合推理服務新手、快速原型開發</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 0.5rem;">核心技術</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                                <li>vLLM 推理引擎</li>
+                                <li>FastAPI 服務框架</li>
+                                <li>基礎性能監控</li>
+                                <li>Docker 容器化</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習產出</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                                <li>可生產環境部署的推理服務</li>
+                                <li>API 接口設計與實現</li>
+                                <li>基礎性能優化技能</li>
+                                <li>服務監控與日誌</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="track-option" id="triton-track" onclick="selectTrack('triton')">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #ff6b6b; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">🏢 Triton Track (企業軌道)</h3>
+                            <p style="margin: 0; color: #64748b;">適合企業級部署、多模型管理需求</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 0.5rem;">核心技術</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                                <li>Triton Inference Server</li>
+                                <li>多後端整合</li>
+                                <li>企業級功能</li>
+                                <li>Kubernetes 部署</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習產出</h4>
+                            <ul style="color: #64748b; padding-left: 1.5rem; margin: 0;">
+                                <li>企業級推理服務架構</li>
+                                <li>多模型統一管理</li>
+                                <li>高可用性部署方案</li>
+                                <li>性能監控與分析</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Technologies -->
+    <section id="technologies" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">核心推理技術</h2>
+
+            <div class="tech-comparison">
+                <div class="tech-card" id="vllm">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #ff6b6b; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">vLLM 推理引擎</h3>
+                            <p style="margin: 0; color: #64748b;">PagedAttention 記憶體管理</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">核心特色</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>PagedAttention 記憶體優化</li>
+                            <li>動態批處理技術</li>
+                            <li>高並發請求處理</li>
+                            <li>OpenAI API 兼容</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">適用場景</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>高並發文本生成服務</li>
+                            <li>聊天機器人後端</li>
+                            <li>API 服務快速部署</li>
+                            <li>研究原型驗證</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">High-Throughput</span>
+                        <span style="background: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Memory-Efficient</span>
+                        <span style="background: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Easy-Deploy</span>
+                    </div>
+                </div>
+
+                <div class="tech-card" id="triton">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #ff6b6b; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">Triton Server</h3>
+                            <p style="margin: 0; color: #64748b;">多模型統一服務平台</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">核心特色</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>多後端框架支援</li>
+                            <li>動態模型載入</li>
+                            <li>A/B 測試支援</li>
+                            <li>企業級監控</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">適用場景</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>企業級模型服務</li>
+                            <li>多模型統一管理</li>
+                            <li>複雜推理流水線</li>
+                            <li>高可用性部署</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Enterprise</span>
+                        <span style="background: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Multi-Model</span>
+                        <span style="background: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Production</span>
+                    </div>
+                </div>
+
+                <div class="tech-card" id="optimization">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #ff6b6b; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">性能優化技術</h3>
+                            <p style="margin: 0; color: #64748b;">推理加速與記憶體優化</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">核心技術</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>算子融合優化</li>
+                            <li>KV Cache 管理</li>
+                            <li>批處理策略</li>
+                            <li>混合精度推理</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">優化目標</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>降低推理延遲</li>
+                            <li>提高吞吐量</li>
+                            <li>減少記憶體佔用</li>
+                            <li>節省計算成本</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #ecfdf5; color: #059669; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Performance</span>
+                        <span style="background: #ecfdf5; color: #059669; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Optimization</span>
+                        <span style="background: #ecfdf5; color: #059669; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Cost-Effective</span>
+                    </div>
+                </div>
+
+                <div class="tech-card" id="serving">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: #ff6b6b; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #2d3748;">服務架構設計</h3>
+                            <p style="margin: 0; color: #64748b;">可擴展的推理服務架構</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">架構模式</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>微服務架構</li>
+                            <li>負載均衡策略</li>
+                            <li>服務發現機制</li>
+                            <li>容錯與恢復</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 1rem;">部署策略</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>容器化部署</li>
+                            <li>Kubernetes 編排</li>
+                            <li>自動伸縮</li>
+                            <li>監控與告警</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #f3e8ff; color: #7c3aed; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Scalable</span>
+                        <span style="background: #f3e8ff; color: #7c3aed; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Reliable</span>
+                        <span style="background: #f3e8ff; color: #7c3aed; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">Observable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs Overview -->
+    <section id="labs" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">實驗手冊</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+                <!-- vLLM Track Labs -->
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-play" style="color: #ff6b6b;"></i>
+                        vLLM Track 實驗
+                    </h3>
+
+                    <div style="border-left: 4px solid #ff6b6b; padding-left: 1rem; margin-bottom: 2rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 2.1 - vLLM 基礎部署</h4>
+                        <p style="color: #64748b; margin-bottom: 1rem;">學習 vLLM 的安裝、配置和基本使用</p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="background: #fee2e2; color: #dc2626; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">4小時</span>
+                            <span style="background: #f0fdf4; color: #16a34a; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">基礎</span>
+                        </div>
+                    </div>
+
+                    <div style="border-left: 4px solid #ff6b6b; padding-left: 1rem; margin-bottom: 2rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 2.2 - 推理優化技術</h4>
+                        <p style="color: #64748b; margin-bottom: 1rem;">PagedAttention 和批處理優化實踐</p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="background: #fee2e2; color: #dc2626; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">6小時</span>
+                            <span style="background: #fef3c7; color: #d97706; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">中級</span>
+                        </div>
+                    </div>
+
+                    <div style="border-left: 4px solid #ff6b6b; padding-left: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 2.3 - FastAPI 服務開發</h4>
+                        <p style="color: #64748b; margin-bottom: 1rem;">構建完整的 API 服務和監控系統</p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="background: #fee2e2; color: #dc2626; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">8小時</span>
+                            <span style="background: #f3e8ff; color: #7c3aed; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">進階</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Triton Track Labs -->
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-building" style="color: #ff6b6b;"></i>
+                        Triton Track 實驗
+                    </h3>
+
+                    <div style="border-left: 4px solid #ffa726; padding-left: 1rem; margin-bottom: 2rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 2.1 - Triton Server 基礎</h4>
+                        <p style="color: #64748b; margin-bottom: 1rem;">Triton Inference Server 安裝與配置</p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="background: #fef3c7; color: #d97706; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">5小時</span>
+                            <span style="background: #f0fdf4; color: #16a34a; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">基礎</span>
+                        </div>
+                    </div>
+
+                    <div style="border-left: 4px solid #ffa726; padding-left: 1rem; margin-bottom: 2rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 2.2 - 多模型管理</h4>
+                        <p style="color: #64748b; margin-bottom: 1rem;">動態模型載入和版本管理</p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="background: #fef3c7; color: #d97706; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">7小時</span>
+                            <span style="background: #fef3c7; color: #d97706; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">中級</span>
+                        </div>
+                    </div>
+
+                    <div style="border-left: 4px solid #ffa726; padding-left: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">Lab 2.3 - 企業級部署</h4>
+                        <p style="color: #64748b; margin-bottom: 1rem;">Kubernetes 部署和高可用性配置</p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="background: #fef3c7; color: #d97706; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">10小時</span>
+                            <span style="background: #f3e8ff; color: #7c3aed; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">進階</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <a href="training.html" style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; text-decoration: none; font-weight: 500;">
+                    <i class="fas fa-arrow-left"></i>
+                    上一模組：核心訓練技術
+                </a>
+                <a href="compression.html" style="display: flex; align-items: center; gap: 0.5rem; color: #ff6b6b; text-decoration: none; font-weight: 500;">
+                    下一模組：模型壓縮
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+    <script>
+        function selectTrack(track) {
+            // Remove active class from all tracks
+            document.querySelectorAll('.track-option').forEach(el => el.classList.remove('active'));
+
+            // Add active class to selected track
+            if (track === 'vllm') {
+                document.getElementById('vllm-track').classList.add('active');
+            } else {
+                document.getElementById('triton-track').classList.add('active');
+            }
+
+            // You could add more functionality here, like showing/hiding relevant content
+            console.log(`Selected track: ${track}`);
+        }
+    </script>
+</body>
+</html>

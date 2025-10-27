@@ -1,61 +1,130 @@
-# 項目文檔導航
+# iSpan LLM One-Piece 知識檢索平台
 
-## 📚 主要文檔位置
+這是一個為外行人設計的 LLM 工程知識檢索平台，將複雜的大語言模型工程知識整理成易於理解和遵循的學習體系。
 
-### 總體課程介紹
-- **主README**: `/README.md` - 完整課程介紹和結構
-- **CLAUDE.md**: `/CLAUDE.md` - Claude Code使用指導
+## 🌟 特色功能
 
-### 各章節文檔
+- **直觀的知識體系**：將 5 大模組的學習內容整理成清晰的層次結構
+- **快速檢索**：強大的搜尋功能，快速找到所需的技術內容
+- **認知建構學習法**：採用螺旋式學習，從直覺理解到理論深度
+- **實戰導向**：每個理論都配有相應的實驗指南
+- **響應式設計**：支援桌面和移動設備
 
-#### 第0章：LLM基礎知識體系 ⭐ **[新增]**
-- **章節README**: `/00-LLM_Fundamentals/README.md`
-- **學習路徑**: `/00-LLM_Fundamentals/LEARNING_PATH.md`
-- **理論文檔**: `/00-LLM_Fundamentals/01-Theory/*/README.md`
-- **實踐Lab**: `/00-LLM_Fundamentals/02-Labs/Lab-*/README.md`
+## 📋 網站結構
 
-#### 第1章：核心訓練技術
-- **章節狀態**: `/01-Core_Training_Techniques/README.md`
-- **理論文檔**: `/01-Core_Training_Techniques/01-Theory/*/README.md`
-- **PEFT Labs**: `/01-Core_Training_Techniques/02-Labs/PEFT_Labs/Lab-*/README.md`
+```
+docs/
+├── index.html              # 主頁面
+├── css/
+│   └── style.css          # 樣式文件
+├── js/
+│   └── main.js            # JavaScript 功能
+├── modules/               # 模組頁面
+│   ├── fundamentals.html  # LLM 基礎理論
+│   ├── training.html      # 核心訓練技術
+│   ├── inference.html     # 高效推理與服務
+│   ├── compression.html   # 模型壓縮
+│   └── evaluation.html    # 評估與數據工程
+├── setup/
+│   └── environment.html   # 環境設置指南
+└── README.md             # 本文件
+```
 
-#### 第2章：高效推理部署
-- **章節狀態**: `/02-Efficient_Inference_and_Serving/CHAPTER_02_STATUS.md`
-- **Triton狀態**: `/02-Efficient_Inference_and_Serving/CHAPTER_02_TRITON_STATUS.md`
-- **快速開始**: `/02-Efficient_Inference_and_Serving/QUICKSTART.md`
+## 🚀 快速開始
 
-#### 第3章：模型壓縮 & 第4章：評估工程
-- 詳細文檔請查看對應章節目錄
+### 方法一：直接瀏覽
 
-## 🛠️ 開發文檔
+1. 用瀏覽器打開 `index.html`
+2. 開始探索 LLM 工程知識
 
-### 環境配置
-- **Poetry環境**: `/00-Course_Setup/pyproject.toml` - 依賴管理
-- **GPU檢查**: `/01-PyTorch_Basics/check_gpu.py` - 環境驗證
+### 方法二：本地服務器
 
-### 共享工具
-- **第1章工具**: `/common_utils/` - PEFT訓練工具
-- **第0章工具**: `/00-LLM_Fundamentals/utils/` - 基礎分析工具
+```bash
+# 在 docs 目錄下啟動簡單的 HTTP 服務器
+cd docs
+python -m http.server 8000
 
-## 📖 如何使用本項目
+# 然後在瀏覽器中訪問 http://localhost:8000
+```
 
-### 新手入門
-1. 閱讀主`/README.md`了解完整課程結構
-2. 從第0章開始：`/00-LLM_Fundamentals/LEARNING_PATH.md`
-3. 按章節順序學習：0→1→2→3→4
+## 📚 學習路徑
 
-### 查找特定內容
-- **理論學習**: 查看各章節`01-Theory/`目錄
-- **實踐操作**: 查看各章節`02-Labs/`目錄
-- **環境問題**: 查看`/00-Course_Setup/`和`/01-PyTorch_Basics/`
-- **工具使用**: 查看`/common_utils/`或章節utils目錄
+### 🎯 基礎入門路徑 (6週)
+1. **LLM 基礎理論** (2週) - 建立基本認知
+2. **核心訓練技術** (3週) - 掌握 PEFT 和分散式訓練
+3. **推理與評估** (1週) - 學習基礎部署和評估
 
-### 貢獻改進
-- 按照各README中的說明進行環境設置
-- 遵循現有代碼風格和文檔格式
-- 提交前測試所有代碼功能
+### 🚀 進階實戰路徑 (12週)
+1. **完整基礎模組** (3週) - 全面理論建構
+2. **深度訓練技術** (4週) - 掌握所有訓練技術
+3. **生產部署技術** (3週) - 推理優化和模型壓縮
+4. **評估與工程** (2週) - 全面評估和數據工程
+
+### 👑 專家研究路徑 (20週)
+1. **理論深度掌握** (8週) - 五層認知建構
+2. **前沿技術探索** (8週) - 最新研究和技術
+3. **創新項目實踐** (4週) - 獨立創新項目
+
+## 🔍 搜尋功能
+
+網站提供強大的搜尋功能，支援：
+
+- **技術名詞搜尋**：如 "LoRA"、"vLLM"、"量化"
+- **概念搜尋**：如 "注意力機制"、"分散式訓練"
+- **模組搜尋**：快速定位到特定學習模組
+- **標籤搜尋**：通過技術標籤快速過濾
+
+## 🎨 設計理念
+
+### 認知建構學習法
+採用五層認知建構理念：
+1. **直覺層**：建立基本認知圖式
+2. **概念層**：理解技術機制
+3. **形式化層**：掌握數學原理
+4. **理論層**：理解深層原理
+5. **創新層**：前沿技術與未來方向
+
+### 外行人友好設計
+- **生活化類比**：用生活中的例子解釋複雜概念
+- **視覺化輔助**：豐富的圖表和視覺元素
+- **漸進式學習**：從簡單到複雜的學習路徑
+- **實戰導向**：理論與實踐相結合
+
+## 🛠️ 技術實現
+
+- **純前端**：HTML5 + CSS3 + Vanilla JavaScript
+- **響應式設計**：Bootstrap-inspired grid system
+- **搜尋功能**：本地 JavaScript 實現
+- **動畫效果**：CSS animations + Intersection Observer
+- **字體**：Noto Sans TC 中文字體
+- **圖標**：Font Awesome 6
+
+## 📱 瀏覽器支援
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- 移動端瀏覽器
+
+## 🤝 貢獻指南
+
+歡迎貢獻內容和改進建議：
+
+1. Fork 本專案
+2. 創建特性分支
+3. 提交改進
+4. 發起 Pull Request
+
+## 📄 授權
+
+本專案採用 MIT 授權，詳見 LICENSE 文件。
+
+## 🙋‍♂️ 支援
+
+- **GitHub Issues**：報告 bug 或功能請求
+- **討論區**：技術討論和學習交流
+- **郵件**：info@ispan-llm.com
 
 ---
 
-**最後更新**: 2025-10-15
-**維護者**: LLM工程化課程團隊
+**開始您的 LLM 工程學習之旅 🚀**

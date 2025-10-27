@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iSpan LLM 完整課程 - 大語言模型工程實戰指南</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#overview" class="nav-link">課程概覽</a>
+                <a href="#modules" class="nav-link">學習模組</a>
+                <a href="#path" class="nav-link">學習路徑</a>
+                <a href="#resources" class="nav-link">學習資源</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">iSpan LLM One-Piece</span>
+                    <br>大語言模型工程完整課程
+                </h1>
+                <p class="hero-subtitle">
+                    從基礎理論到實戰部署，系統性掌握 LLM 工程的核心技術
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">核心模組</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">實戰實驗</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">學習小時</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="#modules" class="btn btn-primary">開始學習</a>
+                    <a href="#path" class="btn btn-secondary">學習路徑</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="tech-stack">
+                    <div class="tech-item">PyTorch</div>
+                    <div class="tech-item">Transformers</div>
+                    <div class="tech-item">DeepSpeed</div>
+                    <div class="tech-item">vLLM</div>
+                    <div class="tech-item">PEFT</div>
+                    <div class="tech-item">OpenCompass</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="搜尋課程內容、技術、實驗..." class="search-input">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </section>
+
+    <!-- Course Overview -->
+    <section id="overview" class="overview-section">
+        <div class="container">
+            <h2 class="section-title">課程概覽</h2>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>系統性學習</h3>
+                    <p>從 LLM 基礎理論到產業實戰，構建完整的知識體系</p>
+                </div>
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>實戰導向</h3>
+                    <p>每個理論都配有相應的程式實驗，學習即實踐</p>
+                </div>
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>認知建構</h3>
+                    <p>採用螺旋式學習法，從直覺理解到理論深度</p>
+                </div>
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>產業接軌</h3>
+                    <p>課程內容與業界最佳實踐緊密結合</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section id="modules" class="modules-section">
+        <div class="container">
+            <h2 class="section-title">學習模組</h2>
+            <div class="modules-grid">
+                <!-- Module 0: LLM Fundamentals -->
+                <div class="module-card" data-module="fundamentals">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="module-level">Level 0</div>
+                    </div>
+                    <h3 class="module-title">LLM 基礎理論</h3>
+                    <p class="module-description">建立對大語言模型的核心理解，掌握 Transformer 架構、評估指標、數據工程等基礎概念</p>
+                    <div class="module-tags">
+                        <span class="tag">Transformer</span>
+                        <span class="tag">評估指標</span>
+                        <span class="tag">數據工程</span>
+                    </div>
+                    <div class="module-stats">
+                        <span><i class="fas fa-clock"></i> 45小時</span>
+                        <span><i class="fas fa-flask"></i> 15個實驗</span>
+                    </div>
+                    <a href="modules/fundamentals.html" class="module-btn">查看詳情</a>
+                </div>
+
+                <!-- Module 1: Core Training -->
+                <div class="module-card" data-module="training">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="module-level">Level 1</div>
+                    </div>
+                    <h3 class="module-title">核心訓練技術</h3>
+                    <p class="module-description">掌握 PEFT、分散式訓練、模型對齊等核心技術，學會高效訓練大語言模型</p>
+                    <div class="module-tags">
+                        <span class="tag">PEFT</span>
+                        <span class="tag">DeepSpeed</span>
+                        <span class="tag">RLHF</span>
+                        <span class="tag">DPO</span>
+                    </div>
+                    <div class="module-stats">
+                        <span><i class="fas fa-clock"></i> 80小時</span>
+                        <span><i class="fas fa-flask"></i> 8個實驗</span>
+                    </div>
+                    <a href="modules/training.html" class="module-btn">查看詳情</a>
+                </div>
+
+                <!-- Module 2: Inference -->
+                <div class="module-card" data-module="inference">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="module-level">Level 2</div>
+                    </div>
+                    <h3 class="module-title">高效推理與服務</h3>
+                    <p class="module-description">學習 vLLM、TensorRT-LLM、Triton 等推理引擎，掌握大模型的生產部署技術</p>
+                    <div class="module-tags">
+                        <span class="tag">vLLM</span>
+                        <span class="tag">Triton</span>
+                        <span class="tag">FastAPI</span>
+                        <span class="tag">性能優化</span>
+                    </div>
+                    <div class="module-stats">
+                        <span><i class="fas fa-clock"></i> 60小時</span>
+                        <span><i class="fas fa-flask"></i> 10個實驗</span>
+                    </div>
+                    <a href="modules/inference.html" class="module-btn">查看詳情</a>
+                </div>
+
+                <!-- Module 3: Compression -->
+                <div class="module-card" data-module="compression">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-compress-alt"></i>
+                        </div>
+                        <div class="module-level">Level 3</div>
+                    </div>
+                    <h3 class="module-title">模型壓縮</h3>
+                    <p class="module-description">掌握量化、剪枝、蒸餾等壓縮技術，實現模型的輕量化部署</p>
+                    <div class="module-tags">
+                        <span class="tag">量化</span>
+                        <span class="tag">剪枝</span>
+                        <span class="tag">知識蒸餾</span>
+                        <span class="tag">GPTQ</span>
+                    </div>
+                    <div class="module-stats">
+                        <span><i class="fas fa-clock"></i> 48小時</span>
+                        <span><i class="fas fa-flask"></i> 6個實驗</span>
+                    </div>
+                    <a href="modules/compression.html" class="module-btn">查看詳情</a>
+                </div>
+
+                <!-- Module 4: Evaluation -->
+                <div class="module-card" data-module="evaluation">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="module-level">Level 4</div>
+                    </div>
+                    <h3 class="module-title">評估與數據工程</h3>
+                    <p class="module-description">學習 OpenCompass 評估框架，掌握數據工程和模型品質評估方法</p>
+                    <div class="module-tags">
+                        <span class="tag">OpenCompass</span>
+                        <span class="tag">MMLU</span>
+                        <span class="tag">數據工程</span>
+                        <span class="tag">品質評估</span>
+                    </div>
+                    <div class="module-stats">
+                        <span><i class="fas fa-clock"></i> 40小時</span>
+                        <span><i class="fas fa-flask"></i> 5個實驗</span>
+                    </div>
+                    <a href="modules/evaluation.html" class="module-btn">查看詳情</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Path -->
+    <section id="path" class="path-section">
+        <div class="container">
+            <h2 class="section-title">建議學習路徑</h2>
+            <div class="path-container">
+                <div class="path-track">
+                    <h3><i class="fas fa-route"></i> 基礎入門路徑 (6週)</h3>
+                    <div class="path-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>LLM 基礎理論</h4>
+                                <p>建立 Transformer 和語言模型基礎認知</p>
+                                <span class="duration">2週</span>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>核心訓練技術</h4>
+                                <p>學習 PEFT 和基礎分散式訓練</p>
+                                <span class="duration">3週</span>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>推理與評估</h4>
+                                <p>掌握基礎推理服務和評估方法</p>
+                                <span class="duration">1週</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="path-track">
+                    <h3><i class="fas fa-rocket"></i> 進階實戰路徑 (12週)</h3>
+                    <div class="path-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>完整基礎模組</h4>
+                                <p>全面學習 LLM 基礎理論和認知建構</p>
+                                <span class="duration">3週</span>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>深度訓練技術</h4>
+                                <p>掌握所有 PEFT 技術和進階對齊方法</p>
+                                <span class="duration">4週</span>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>生產部署技術</h4>
+                                <p>學習推理優化、模型壓縮和服務架構</p>
+                                <span class="duration">3週</span>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>評估與工程</h4>
+                                <p>掌握全面評估和數據工程實踐</p>
+                                <span class="duration">2週</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="path-track">
+                    <h3><i class="fas fa-crown"></i> 專家研究路徑 (20週)</h3>
+                    <div class="path-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>理論深度掌握</h4>
+                                <p>五層認知建構，達到創新層次</p>
+                                <span class="duration">8週</span>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>前沿技術探索</h4>
+                                <p>掌握最新研究和前沿技術</p>
+                                <span class="duration">8週</span>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>創新項目實踐</h4>
+                                <p>獨立完成創新項目和研究</p>
+                                <span class="duration">4週</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access -->
+    <section class="quick-access">
+        <div class="container">
+            <h2 class="section-title">快速檢索</h2>
+            <div class="quick-grid">
+                <div class="quick-category">
+                    <h3><i class="fas fa-book"></i> 理論基礎</h3>
+                    <ul>
+                        <li><a href="modules/fundamentals.html#transformer">Transformer 架構</a></li>
+                        <li><a href="modules/fundamentals.html#attention">注意力機制</a></li>
+                        <li><a href="modules/fundamentals.html#tokenization">分詞技術</a></li>
+                        <li><a href="modules/training.html#lifecycle">LLM 生命週期</a></li>
+                    </ul>
+                </div>
+                <div class="quick-category">
+                    <h3><i class="fas fa-cogs"></i> 訓練技術</h3>
+                    <ul>
+                        <li><a href="modules/training.html#lora">LoRA 低秩適應</a></li>
+                        <li><a href="modules/training.html#deepspeed">DeepSpeed ZeRO</a></li>
+                        <li><a href="modules/training.html#dpo">DPO 直接偏好優化</a></li>
+                        <li><a href="modules/training.html#rlhf">RLHF 強化學習</a></li>
+                    </ul>
+                </div>
+                <div class="quick-category">
+                    <h3><i class="fas fa-server"></i> 推理部署</h3>
+                    <ul>
+                        <li><a href="modules/inference.html#vllm">vLLM 推理引擎</a></li>
+                        <li><a href="modules/inference.html#triton">Triton Server</a></li>
+                        <li><a href="modules/inference.html#optimization">性能優化</a></li>
+                        <li><a href="modules/inference.html#serving">服務架構</a></li>
+                    </ul>
+                </div>
+                <div class="quick-category">
+                    <h3><i class="fas fa-compress"></i> 模型優化</h3>
+                    <ul>
+                        <li><a href="modules/compression.html#quantization">模型量化</a></li>
+                        <li><a href="modules/compression.html#pruning">模型剪枝</a></li>
+                        <li><a href="modules/compression.html#distillation">知識蒸餾</a></li>
+                        <li><a href="modules/compression.html#gptq">GPTQ 量化</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources -->
+    <section id="resources" class="resources-section">
+        <div class="container">
+            <h2 class="section-title">學習資源</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h3>GitHub 儲存庫</h3>
+                    <p>完整的課程程式碼、實驗和資源</p>
+                    <a href="https://github.com/ispan-llm-one-piece" class="resource-link">查看儲存庫</a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>環境設置指南</h3>
+                    <p>Poetry 環境配置和依賴管理</p>
+                    <a href="setup/environment.html" class="resource-link">設置指南</a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>實驗手冊</h3>
+                    <p>所有實驗的詳細操作指南</p>
+                    <a href="labs/index.html" class="resource-link">實驗手冊</a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>常見問題</h3>
+                    <p>學習過程中的常見問題解答</p>
+                    <a href="faq/index.html" class="resource-link">查看 FAQ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>iSpan LLM One-Piece</h3>
+                    <p>系統性的大語言模型工程學習平台</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速連結</h4>
+                    <ul>
+                        <li><a href="#modules">學習模組</a></li>
+                        <li><a href="#path">學習路徑</a></li>
+                        <li><a href="setup/environment.html">環境設置</a></li>
+                        <li><a href="faq/index.html">常見問題</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>技術棧</h4>
+                    <ul>
+                        <li>PyTorch 2.5+</li>
+                        <li>Transformers 4.57+</li>
+                        <li>DeepSpeed</li>
+                        <li>vLLM</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>聯絡我們</h4>
+                    <ul>
+                        <li><a href="mailto:info@ispan-llm.com">info@ispan-llm.com</a></li>
+                        <li><a href="https://github.com/ispan-llm-one-piece">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 iSpan LLM One-Piece. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>環境設置指南 - iSpan LLM 完整課程</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .setup-hero {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 120px 0 80px;
+            margin-top: 80px;
+        }
+        .setup-step {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 4px solid #2d3748;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            overflow-x: auto;
+        }
+        .warning-box {
+            background: #fef3cd;
+            border: 1px solid #faebcd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .success-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .requirement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .requirement-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="#requirements" class="nav-link">系統需求</a>
+                <a href="#installation" class="nav-link">安裝步驟</a>
+                <a href="#verification" class="nav-link">環境驗證</a>
+                <a href="#troubleshooting" class="nav-link">問題排解</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Setup Hero -->
+    <header class="setup-hero">
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-cog" style="font-size: 2rem;"></i>
+                </div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">環境設置指南</h1>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">
+                    完整的 Poetry 環境配置和依賴管理指南，讓您快速開始 LLM 工程之旅
+                </p>
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; display: inline-block;">
+                    <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                    支援 Windows、macOS、Linux 和 WSL 環境
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- System Requirements -->
+    <section id="requirements" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">系統需求</h2>
+
+            <div class="requirement-grid">
+                <div class="requirement-card">
+                    <div style="background: #667eea; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3 style="color: #2d3748; margin-bottom: 1rem;">作業系統</h3>
+                    <ul style="text-align: left; color: #64748b; list-style: none; padding: 0;">
+                        <li><i class="fab fa-windows" style="color: #0078d4; margin-right: 0.5rem;"></i> Windows 10/11</li>
+                        <li><i class="fab fa-apple" style="color: #000; margin-right: 0.5rem;"></i> macOS 10.15+</li>
+                        <li><i class="fab fa-linux" style="color: #fcc624; margin-right: 0.5rem;"></i> Ubuntu 20.04+</li>
+                        <li><i class="fas fa-terminal" style="color: #16a085; margin-right: 0.5rem;"></i> WSL2 (推薦)</li>
+                    </ul>
+                </div>
+
+                <div class="requirement-card">
+                    <div style="background: #667eea; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3 style="color: #2d3748; margin-bottom: 1rem;">硬體需求</h3>
+                    <ul style="text-align: left; color: #64748b; list-style: none; padding: 0;">
+                        <li><i class="fas fa-memory" style="color: #e74c3c; margin-right: 0.5rem;"></i> 記憶體：16GB+ (32GB 推薦)</li>
+                        <li><i class="fas fa-hdd" style="color: #f39c12; margin-right: 0.5rem;"></i> 儲存：100GB+ 可用空間</li>
+                        <li><i class="fas fa-bolt" style="color: #27ae60; margin-right: 0.5rem;"></i> GPU：NVIDIA RTX 3090+ (選用)</li>
+                        <li><i class="fas fa-tachometer-alt" style="color: #3498db; margin-right: 0.5rem;"></i> CUDA：12.1+ (GPU 訓練)</li>
+                    </ul>
+                </div>
+
+                <div class="requirement-card">
+                    <div style="background: #667eea; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3 style="color: #2d3748; margin-bottom: 1rem;">軟體需求</h3>
+                    <ul style="text-align: left; color: #64748b; list-style: none; padding: 0;">
+                        <li><i class="fab fa-python" style="color: #3776ab; margin-right: 0.5rem;"></i> Python 3.9-3.11</li>
+                        <li><i class="fas fa-book" style="color: #8e44ad; margin-right: 0.5rem;"></i> Poetry 1.4+</li>
+                        <li><i class="fab fa-git-alt" style="color: #f05032; margin-right: 0.5rem;"></i> Git 2.0+</li>
+                        <li><i class="fas fa-code" style="color: #007acc; margin-right: 0.5rem;"></i> VS Code (推薦)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <i class="fas fa-exclamation-triangle" style="color: #856404;"></i>
+                    <strong style="color: #856404;">重要提醒</strong>
+                </div>
+                <p style="color: #856404; margin: 0;">
+                    本課程針對 CUDA 12.1 進行最佳化。如果您使用其他 CUDA 版本，可能需要手動調整部分依賴包。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Steps -->
+    <section id="installation" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">安裝步驟</h2>
+
+            <div class="setup-step">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #2d3748; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                    <h3 style="margin: 0; color: #2d3748;">Clone 專案儲存庫</h3>
+                </div>
+                <p style="color: #64748b; margin-bottom: 1rem;">首先將課程儲存庫 clone 到本地環境：</p>
+                <div class="code-block">
+                    <div style="color: #68d391;"># Clone 專案</div>
+                    <div>git clone https://github.com/ispan-llm/iSpan_LLM-One-Piece.git</div>
+                    <div>cd iSpan_LLM-One-Piece</div>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #2d3748; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
+                    <h3 style="margin: 0; color: #2d3748;">安裝 Poetry</h3>
+                </div>
+                <p style="color: #64748b; margin-bottom: 1rem;">如果尚未安裝 Poetry，請根據您的作業系統選擇安裝方式：</p>
+
+                <h4 style="color: #2d3748; margin: 1.5rem 0 0.5rem 0;">Windows (PowerShell)</h4>
+                <div class="code-block">
+                    <div>(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -</div>
+                </div>
+
+                <h4 style="color: #2d3748; margin: 1.5rem 0 0.5rem 0;">macOS / Linux</h4>
+                <div class="code-block">
+                    <div>curl -sSL https://install.python-poetry.org | python3 -</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong style="color: #856404;">注意：</strong> 安裝完成後，請重新啟動終端或執行 <code>source ~/.bashrc</code>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #2d3748; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+                    <h3 style="margin: 0; color: #2d3748;">設置環境</h3>
+                </div>
+                <p style="color: #64748b; margin-bottom: 1rem;">進入課程設置目錄並安裝依賴：</p>
+                <div class="code-block">
+                    <div style="color: #68d391;"># 進入設置目錄</div>
+                    <div>cd 00-Course_Setup/</div>
+                    <div></div>
+                    <div style="color: #68d391;"># 安裝所有依賴（包含可選的推理工具）</div>
+                    <div>poetry install --no-root --all-extras</div>
+                    <div></div>
+                    <div style="color: #68d391;"># 或者僅安裝基礎依賴</div>
+                    <div style="color: #718096;"># poetry install --no-root</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong style="color: #856404;">依賴說明：</strong>
+                    <ul style="margin: 0.5rem 0 0 1.5rem; color: #856404;">
+                        <li><code>--all-extras</code>：安裝包含 vLLM、Flash Attention 等可選依賴</li>
+                        <li>基礎安裝：僅安裝核心訓練依賴，適合記憶體較小的環境</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #2d3748; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">4</div>
+                    <h3 style="margin: 0; color: #2d3748;">啟動虛擬環境</h3>
+                </div>
+                <p style="color: #64748b; margin-bottom: 1rem;">獲取並啟動 Poetry 建立的虛擬環境：</p>
+                <div class="code-block">
+                    <div style="color: #68d391;"># 獲取虛擬環境啟動命令</div>
+                    <div>poetry env activate</div>
+                    <div></div>
+                    <div style="color: #68d391;"># 執行輸出的命令，例如：</div>
+                    <div>source /path/to/.venv/bin/activate</div>
+                    <div></div>
+                    <div style="color: #68d391;"># 或者使用專案內的虛擬環境</div>
+                    <div>source ./.venv/bin/activate</div>
+                </div>
+
+                <div class="success-box">
+                    <strong style="color: #0c5460;">提示：</strong> 啟動成功後，您的終端提示符前應該會顯示 <code>(.venv)</code>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #2d3748; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">5</div>
+                    <h3 style="margin: 0; color: #2d3748;">安裝 GPU 依賴（可選）</h3>
+                </div>
+                <p style="color: #64748b; margin-bottom: 1rem;">如果您有 NVIDIA GPU 且需要進行模型訓練，請安裝 GPU 加速庫：</p>
+                <div class="code-block">
+                    <div style="color: #68d391;"># Flash Attention (需要 GPU 和 CUDA)</div>
+                    <div>MAX_JOBS=4 pip install flash-attn --no-build-isolation --no-cache-dir</div>
+                    <div></div>
+                    <div style="color: #68d391;"># vLLM (推理加速，需要 GPU)</div>
+                    <div>pip install vllm</div>
+                    <div></div>
+                    <div style="color: #68d391;"># 檢查 CUDA 可用性</div>
+                    <div>python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong style="color: #856404;">注意：</strong> GPU 依賴安裝可能需要 10-30 分鐘，建議在網路狀況良好時進行。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verification -->
+    <section id="verification" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">環境驗證</h2>
+
+            <div class="setup-step">
+                <h3 style="color: #2d3748; margin-bottom: 1rem;">檢查 GPU 和 CUDA 環境</h3>
+                <p style="color: #64748b; margin-bottom: 1rem;">運行以下腳本來驗證您的 GPU 環境是否正確配置：</p>
+                <div class="code-block">
+                    <div style="color: #68d391;"># 進入專案根目錄</div>
+                    <div>cd .. # 從 00-Course_Setup 回到根目錄</div>
+                    <div></div>
+                    <div style="color: #68d391;"># 執行 GPU 檢查腳本</div>
+                    <div>python 01-PyTorch_Basics/check_gpu.py</div>
+                </div>
+
+                <p style="color: #64748b; margin: 1rem 0;">預期輸出應該包含：</p>
+                <div style="background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; font-family: monospace;">
+                    ✅ PyTorch version: 2.5.1+cu121<br>
+                    ✅ CUDA available: True<br>
+                    ✅ CUDA version: 12.1<br>
+                    ✅ GPU count: 1<br>
+                    ✅ GPU name: NVIDIA GeForce RTX 4090
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <h3 style="color: #2d3748; margin-bottom: 1rem;">啟動 Jupyter Lab</h3>
+                <p style="color: #64748b; margin-bottom: 1rem;">驗證 Jupyter Lab 環境是否正常運作：</p>
+                <div class="code-block">
+                    <div style="color: #68d391;"># 啟動 Jupyter Lab</div>
+                    <div>jupyter lab</div>
+                </div>
+
+                <p style="color: #64748b; margin: 1rem 0;">
+                    成功啟動後，瀏覽器會自動開啟 Jupyter Lab 介面。您可以建立一個新的 Notebook 並執行以下程式碼進行測試：
+                </p>
+
+                <div style="background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                    <strong>測試程式碼：</strong>
+                    <div class="code-block" style="margin-top: 0.5rem;">
+                        <div>import torch</div>
+                        <div>import transformers</div>
+                        <div>from peft import LoraConfig</div>
+                        <div></div>
+                        <div>print("環境檢查通過！")</div>
+                        <div>print(f"PyTorch 版本: {torch.__version__}")</div>
+                        <div>print(f"Transformers 版本: {transformers.__version__}")</div>
+                        <div>print(f"GPU 可用: {torch.cuda.is_available()}")</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <h3 style="color: #2d3748; margin-bottom: 1rem;">測試模型載入</h3>
+                <p style="color: #64748b; margin-bottom: 1rem;">載入一個小型模型來驗證完整的工作流程：</p>
+                <div class="code-block">
+                    <div style="color: #68d391;"># 在 Jupyter Notebook 中執行</div>
+                    <div>from transformers import AutoTokenizer, AutoModelForCausalLM</div>
+                    <div></div>
+                    <div># 載入小型測試模型</div>
+                    <div>model_name = "microsoft/DialoGPT-small"</div>
+                    <div>tokenizer = AutoTokenizer.from_pretrained(model_name)</div>
+                    <div>model = AutoModelForCausalLM.from_pretrained(model_name)</div>
+                    <div></div>
+                    <div>print("模型載入成功！")</div>
+                    <div>print(f"模型參數量: {model.num_parameters():,}")</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section id="troubleshooting" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">常見問題排解</h2>
+
+            <div style="display: grid; gap: 2rem;">
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #e53e3e; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Poetry install 失敗
+                    </h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>問題：</strong> 依賴安裝過程中出現錯誤</p>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>解決方案：</strong></p>
+                    <div class="code-block">
+                        <div style="color: #68d391;"># 清除 Poetry 快取</div>
+                        <div>poetry cache clear pypi --all</div>
+                        <div></div>
+                        <div style="color: #68d391;"># 重新安裝</div>
+                        <div>poetry install --no-root --all-extras</div>
+                    </div>
+                </div>
+
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #e53e3e; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        CUDA 版本不匹配
+                    </h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>問題：</strong> PyTorch CUDA 版本與系統 CUDA 不匹配</p>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>解決方案：</strong></p>
+                    <div class="code-block">
+                        <div style="color: #68d391;"># 檢查系統 CUDA 版本</div>
+                        <div>nvcc --version</div>
+                        <div></div>
+                        <div style="color: #68d391;"># 安裝對應的 PyTorch 版本</div>
+                        <div>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118</div>
+                    </div>
+                </div>
+
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #e53e3e; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        記憶體不足
+                    </h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>問題：</strong> 訓練時出現 CUDA out of memory 錯誤</p>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>解決方案：</strong></p>
+                    <ul style="color: #64748b; padding-left: 1.5rem;">
+                        <li>減少 batch_size</li>
+                        <li>使用梯度累積</li>
+                        <li>啟用 gradient checkpointing</li>
+                        <li>使用量化技術（QLoRA）</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #e53e3e; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        模型下載失敗
+                    </h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>問題：</strong> HuggingFace 模型下載超時或失敗</p>
+                    <p style="color: #64748b; margin-bottom: 1rem;"><strong>解決方案：</strong></p>
+                    <div class="code-block">
+                        <div style="color: #68d391;"># 設置鏡像站點（中國大陸用戶）</div>
+                        <div>export HF_ENDPOINT=https://hf-mirror.com</div>
+                        <div></div>
+                        <div style="color: #68d391;"># 或使用代理</div>
+                        <div>export HTTP_PROXY=http://your-proxy:port</div>
+                        <div>export HTTPS_PROXY=http://your-proxy:port</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; background: #e3f2fd; border-radius: 12px; padding: 2rem; text-align: center;">
+                <h3 style="color: #1976d2; margin-bottom: 1rem;">
+                    <i class="fas fa-life-ring"></i>
+                    需要更多幫助？
+                </h3>
+                <p style="color: #1976d2; margin-bottom: 1.5rem;">
+                    如果您遇到其他問題，請參考我們的完整 FAQ 或在 GitHub 上提出 Issue
+                </p>
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <a href="../faq/index.html" style="background: #1976d2; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                        查看 FAQ
+                    </a>
+                    <a href="https://github.com/ispan-llm/iSpan_LLM-One-Piece/issues" style="background: transparent; color: #1976d2; border: 2px solid #1976d2; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                        GitHub Issues
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div style="text-align: center;">
+                <a href="../index.html" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #667eea; text-decoration: none; font-weight: 500; font-size: 1.1rem;">
+                    <i class="fas fa-arrow-left"></i>
+                    返回課程首頁，開始學習之旅
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

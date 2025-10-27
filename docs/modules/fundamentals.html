@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM 基礎理論 - iSpan LLM 完整課程</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 120px 0 80px;
+            margin-top: 80px;
+        }
+        .learning-path {
+            background: #f8fafc;
+            padding: 3rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        .level-card {
+            background: white;
+            border-left: 4px solid #4facfe;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .topic-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .topic-card:hover {
+            transform: translateY(-5px);
+        }
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #64748b;
+        }
+        .progress-step.active {
+            background: #4facfe;
+            color: white;
+        }
+        .progress-line {
+            flex: 1;
+            height: 2px;
+            background: #e2e8f0;
+        }
+        .progress-line.active {
+            background: #4facfe;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>iSpan LLM</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="../index.html#modules" class="nav-link">所有模組</a>
+                <a href="#learning-path" class="nav-link">學習路徑</a>
+                <a href="#topics" class="nav-link">核心主題</a>
+                <a href="#labs" class="nav-link">實驗手冊</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Hero -->
+    <header class="module-hero">
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-brain" style="font-size: 2rem;"></i>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                        Level 0
+                    </div>
+                </div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">LLM 基礎理論</h1>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">
+                    建立對大語言模型的核心理解，掌握 Transformer 架構、評估指標、數據工程等基礎概念
+                </p>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">45</div>
+                        <div style="opacity: 0.8;">學習小時</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">15</div>
+                        <div style="opacity: 0.8;">實驗項目</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">5</div>
+                        <div style="opacity: 0.8;">認知層次</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Module Overview -->
+    <section style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">模組概覽</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 1.2rem; color: #64748b; line-height: 1.8;">
+                    本模組採用認知建構理論設計，遵循「螺旋式上升」的學習原則，從直覺理解到理論深度，
+                    幫助學員建立對大語言模型的完整認知框架。
+                </p>
+            </div>
+
+            <div class="learning-path" id="learning-path">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: #2d3748;">五層認知建構學習路徑</h3>
+
+                <div class="level-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                        <h4 style="color: #2d3748; margin: 0;">直覺層 (Intuitive Understanding)</h4>
+                    </div>
+                    <p style="color: #64748b; margin: 0;">建立對 LLM 的基本直觀認知，理解「為什麼需要這個技術」</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">生活類比</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">視覺化</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem;">思考驗證</span>
+                    </div>
+                </div>
+
+                <div class="level-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
+                        <h4 style="color: #2d3748; margin: 0;">概念層 (Conceptual Framework)</h4>
+                    </div>
+                    <p style="color: #64748b; margin: 0;">掌握核心概念和技術框架，理解「這是什麼」</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">概念框架</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">技術分類</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem;">實際操作</span>
+                    </div>
+                </div>
+
+                <div class="level-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+                        <h4 style="color: #2d3748; margin: 0;">形式化層 (Mathematical Formalization)</h4>
+                    </div>
+                    <p style="color: #64748b; margin: 0;">掌握數學原理和算法實現，理解「如何數學表達」</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">數學公式</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">算法分析</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem;">複雜度</span>
+                    </div>
+                </div>
+
+                <div class="level-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">4</div>
+                        <h4 style="color: #2d3748; margin: 0;">理論層 (Theoretical Foundations)</h4>
+                    </div>
+                    <p style="color: #64748b; margin: 0;">理解深層原理和設計哲學，理解「為什麼這樣設計」</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">理論基礎</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">設計哲學</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem;">權衡分析</span>
+                    </div>
+                </div>
+
+                <div class="level-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">5</div>
+                        <h4 style="color: #2d3748; margin: 0;">創新層 (Innovation & Research)</h4>
+                    </div>
+                    <p style="color: #64748b; margin: 0;">掌握前沿發展和創新應用，理解「如何改進和創新」</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">前沿技術</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">開放問題</span>
+                        <span style="background: #e2e8f0; color: #64748b; padding: 4px 8px; border-radius: 4px; font-size: 0.9rem;">創新方向</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Topics -->
+    <section id="topics" style="padding: 5rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">核心學習主題</h2>
+
+            <div class="topic-grid">
+                <div class="topic-card" id="transformer">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h3 style="margin: 0; color: #2d3748;">Transformer 架構</h3>
+                    </div>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        深入理解 Transformer 的自注意力機制、位置編碼、前饋網路等核心組件
+                    </p>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習要點：</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>Self-Attention 機制原理</li>
+                            <li>Multi-Head Attention 設計</li>
+                            <li>Position Encoding 技術</li>
+                            <li>Layer Normalization 作用</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">attention</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">transformer</span>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">architecture</span>
+                    </div>
+                </div>
+
+                <div class="topic-card" id="lifecycle">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-recycle"></i>
+                        </div>
+                        <h3 style="margin: 0; color: #2d3748;">LLM 生命週期</h3>
+                    </div>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        理解大語言模型從預訓練到部署的完整生命週期
+                    </p>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習要點：</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>預訓練階段的資料和目標</li>
+                            <li>微調階段的技術選擇</li>
+                            <li>對齊階段的方法對比</li>
+                            <li>部署階段的考量因素</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">pre-training</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">fine-tuning</span>
+                        <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">alignment</span>
+                    </div>
+                </div>
+
+                <div class="topic-card" id="evaluation">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 style="margin: 0; color: #2d3748;">評估指標體系</h3>
+                    </div>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        掌握多維度評估框架，學會科學評估模型能力
+                    </p>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習要點：</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>流暢性指標：困惑度、BLEU</li>
+                            <li>準確性指標：精確率、召回率</li>
+                            <li>能力評估：MMLU、GSM8K</li>
+                            <li>安全性評估：偏見檢測</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">evaluation</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">metrics</span>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">benchmark</span>
+                    </div>
+                </div>
+
+                <div class="topic-card" id="data-engineering">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 style="margin: 0; color: #2d3748;">數據工程基礎</h3>
+                    </div>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        理解高質量數據的重要性，掌握數據處理和質量控制方法
+                    </p>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習要點：</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>數據品質六大維度</li>
+                            <li>數據清洗和預處理</li>
+                            <li>去重技術和算法</li>
+                            <li>數據集設計原則</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">data-quality</span>
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">preprocessing</span>
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">deduplication</span>
+                    </div>
+                </div>
+
+                <div class="topic-card" id="tokenization">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <h3 style="margin: 0; color: #2d3748;">分詞技術詳解</h3>
+                    </div>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        深入理解 BPE、SentencePiece 等分詞技術的原理和應用
+                    </p>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習要點：</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>BPE 算法原理與實現</li>
+                            <li>SentencePiece 統一框架</li>
+                            <li>詞表大小對模型的影響</li>
+                            <li>多語言分詞挑戰</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #e0f2f1; color: #00695c; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">tokenization</span>
+                        <span style="background: #e0f2f1; color: #00695c; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">BPE</span>
+                        <span style="background: #e0f2f1; color: #00695c; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">vocabulary</span>
+                    </div>
+                </div>
+
+                <div class="topic-card" id="optimization">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #4facfe; color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 style="margin: 0; color: #2d3748;">優化與對齊理論</h3>
+                    </div>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        理解訓練優化技術和模型對齊的理論基礎
+                    </p>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: #2d3748; margin-bottom: 0.5rem;">學習要點：</h4>
+                        <ul style="color: #64748b; padding-left: 1.5rem;">
+                            <li>梯度下降優化算法</li>
+                            <li>學習率調度策略</li>
+                            <li>人類偏好學習理論</li>
+                            <li>價值對齊的哲學基礎</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">optimization</span>
+                        <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">alignment</span>
+                        <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">preference</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs Section -->
+    <section id="labs" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title">實驗手冊</h2>
+
+            <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                <h3 style="color: #2d3748; margin-bottom: 2rem;">基礎理論實驗清單</h3>
+
+                <div style="display: grid; gap: 1.5rem;">
+                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: #2d3748; margin: 0;">Lab 0.1 - LLM 生命週期演示</h4>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">2小時</span>
+                        </div>
+                        <p style="color: #64748b; margin-bottom: 1rem;">
+                            通過實際操作觀察預訓練、微調、對齊各階段的效果差異
+                        </p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Transformers</span>
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">HuggingFace</span>
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">模型比較</span>
+                        </div>
+                        <a href="../labs/lab-0-1.html" style="color: #4facfe; text-decoration: none; font-weight: 500;">查看實驗指南 →</a>
+                    </div>
+
+                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: #2d3748; margin: 0;">Lab 0.2 - 評估指標實踐</h4>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">2小時</span>
+                        </div>
+                        <p style="color: #64748b; margin-bottom: 1rem;">
+                            動手計算困惑度、BLEU 分數等指標，理解評估的實際意義
+                        </p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">評估指標</span>
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">統計分析</span>
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">基準測試</span>
+                        </div>
+                        <a href="../labs/lab-0-2.html" style="color: #4facfe; text-decoration: none; font-weight: 500;">查看實驗指南 →</a>
+                    </div>
+
+                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: #2d3748; margin: 0;">Lab 0.3 - 數據集分析</h4>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">3小時</span>
+                        </div>
+                        <p style="color: #64748b; margin-bottom: 1rem;">
+                            分析不同數據集的特性，實踐數據清洗和質量評估
+                        </p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">數據分析</span>
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">品質評估</span>
+                            <span style="background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">視覺化</span>
+                        </div>
+                        <a href="../labs/lab-0-3.html" style="color: #4facfe; text-decoration: none; font-weight: 500;">查看實驗指南 →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Tracking -->
+    <section style="padding: 3rem 0; background: #f8fafc;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #2d3748;">學習進度追蹤</h2>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="progress-indicator">
+                    <div class="progress-step active">1</div>
+                    <div class="progress-line active"></div>
+                    <div class="progress-step">2</div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">3</div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">4</div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">5</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-weight: 600; color: #4facfe;">直覺層</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">基本認知</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-weight: 600; color: #64748b;">概念層</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">技術框架</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-weight: 600; color: #64748b;">形式化層</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">數學原理</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-weight: 600; color: #64748b;">理論層</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">深層原理</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-weight: 600; color: #64748b;">創新層</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">前沿技術</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <a href="../index.html" style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; text-decoration: none; font-weight: 500;">
+                    <i class="fas fa-arrow-left"></i>
+                    回到課程首頁
+                </a>
+                <a href="training.html" style="display: flex; align-items: center; gap: 0.5rem; color: #4facfe; text-decoration: none; font-weight: 500;">
+                    下一模組：核心訓練技術
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

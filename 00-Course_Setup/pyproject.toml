@@ -52,9 +52,10 @@ ipykernel = "^6.29.0"
 # PyTorch with CUDA support - 鎖定版本防止被覆蓋
 # 警告: 不要使用 poetry update torch，會安裝 CPU 版本！
 # 手動安裝命令: pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio==2.8.0+cu128 --index-url https://download.pytorch.org/whl/cu128
-torch = "2.8.0+cu128"
-torchvision = "0.23.0+cu128"
-torchaudio = "2.8.0+cu128"
+# 注意: 以下依賴因版本號包含構建標記 (+cu128)，導致 Poetry 無法解析，已改為手動管理
+# torch = "2.8.0+cu128"
+# torchvision = "0.23.0+cu128"
+# torchaudio = "2.8.0+cu128"
 
 # Flash-Attn build dependencies (從源碼編譯)
 packaging = "^24.0"

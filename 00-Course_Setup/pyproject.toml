@@ -56,11 +56,6 @@ torch = "2.8.0+cu128"
 torchvision = "0.23.0+cu128"
 torchaudio = "2.8.0+cu128"
 
-[[tool.poetry.source]]
-name = "pytorch-cu128"
-url = "https://download.pytorch.org/whl/cu128"
-priority = "explicit"
-
 # Flash-Attn build dependencies (從源碼編譯)
 packaging = "^24.0"
 ninja = "^1.11.1"
@@ -77,6 +72,11 @@ langdetect = "^1.0.9"
 wordcloud = "^1.9.4"
 jieba = "^0.42.1"
 textstat = "^0.7.10"
+
+[[tool.poetry.source]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+priority = "explicit"
 
 # flash-attn 2.8.3 - 從源碼編譯安裝
 # 安裝指令: MAX_JOBS=4 pip install flash-attn --no-build-isolation --no-cache-dir
